@@ -585,9 +585,8 @@ function updateSpeedStatusDisplay(currentSpeed) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Giriş başarılı ise buraya ulaşılır.
-    
+// Sayfa yüklendikten sonra çalışacak ana fonksiyon
+function init() {
     // 1. Alt menü aktifliğini ayarlama
     document.querySelectorAll('.bottom-menu a').forEach(link => {
         link.classList.remove('active');
@@ -601,7 +600,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('message').innerText = "Hesap bilgileri başarıyla yüklendi. Hemen yükseltin!";
     document.getElementById('message').style.color = "#4cd964";
     showFloatingAlert("Hız paketleri yüklendi ve hazır.", 'success', 2000);
-});
+}
+
+
+// document.addEventListener('DOMContentLoaded', () => {
+//     checkFirebaseLogin(); // Sadece Firebase kontrolünü başlat
+// });
+
+// DOMContentLoaded yerine doğrudan çağrılır, Firebase kütüphanesinin yüklenmesini bekler.
+checkFirebaseLogin(); 
 </script>
 </body>
 </html>
