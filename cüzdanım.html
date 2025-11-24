@@ -156,10 +156,10 @@ header{
 /* GÜVENLİK/CANLI DESTEK UYARISI */
 .security-info-box {
     background: #2d333b;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
     border-left: 5px solid #e34c4c;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
 }
 .security-info-box h4 {
     color: #e34c4c;
@@ -471,31 +471,11 @@ dialog {
   <a href="#" id="tabWallet" class="active"><i class="fas fa-wallet"></i> Cüzdanım</a>
 </div>
 
-<script>
-/* ========================================================================= */
-/* --- GİRİŞ KONTROLÜ (GÜVENLİK) --- */
-/* Bu kod, Firebase yüklenmeden önce çalışır ve giriş yapmayanı engeller. */
-/* ========================================================================= */
-function checkLogin() {
-    // Varsayılan kontrol: `isLoggedIn` bayrağını kontrol et
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    
-    if (isLoggedIn !== 'true') {
-        // Hızlı yönlendirme (index.html'ye)
-        window.location.href = 'index.html'; 
-        // Yönlendirme tamamlanana kadar sayfanın yüklenmesini durdur
-        return false; 
-    }
-    return true;
-}
-
-if (!checkLogin()) {
-    // Eğer yönlendirme gerçekleştiyse, aşağıdaki kodların çalışmasını engelle.
-    throw new Error("Kullanıcı girişi yapılmamış. Yönlendiriliyor...");
-}
-</script>
-
 <script type="module">
+/* ========================================================================= */
+/* --- YENİ GİRİŞ KONTROLÜ (FIREBASE TABANLI) --- */
+/* Eski LocalStorage kontrolü kaldırıldı. Artık sadece bu blok çalışır. */
+/* ========================================================================= */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
