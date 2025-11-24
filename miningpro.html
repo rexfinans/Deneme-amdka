@@ -3,894 +3,434 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MiningPRO - Kontrol Paneli</title>
+<title>MiningPRO - Kazım Kontrol</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* --- GENEL STİLLER --- */
-body, html{ margin:0; padding:0; font-family: 'Roboto', sans-serif; background: #121212; color:#e0e0e0; min-height:100vh; padding-bottom: 70px; }
-* { box-sizing: border-box; }
-
-header{ background:#1f1f1f; padding:15px; text-align:center; font-size:28px; font-weight:900; color:#00e676; text-shadow: 0 0 10px rgba(0, 230, 118, 0.4); box-shadow:0 5px 15px rgba(0,0,0,0.6); position:sticky; top:0; z-index:100;}
-header i { margin-right: 10px; color:#00b0ff; }
-.wrapper{ max-width:550px; margin:20px auto; padding:0 15px; }
-
-/* KARTLAR */
-.card, .exchange-panel, .footer-info { background:#1f1f1f; border-radius:15px; padding:25px; margin-bottom:25px; box-shadow:0 6px 20px rgba(0,0,0,0.5); border: 1px solid #333; }
-.card h2 { color: #00b0ff; font-size: 22px; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px; font-weight: 700; }
-.card h3 { color: #e0e0e0; font-size: 17px; margin-top: 15px; margin-bottom: 10px; font-weight: 700; }
-
-/* INPUT */
-select{ width:100%; padding:14px; font-size:16px; border-radius:10px; border:2px solid #ff9800; background:#121212; color:#e0e0e0; font-weight: 700; transition: border-color 0.3s;}
-.select-wrapper { position: relative; }
-.select-wrapper::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #ff9800; pointer-events: none;}
-
-/* --- CİHAZ VE ANİMASYON --- */
-@keyframes pulse {
-    0% { box-shadow: inset 0 0 10px rgba(0, 230, 118, 0.4), 0 0 10px rgba(0, 230, 118, 0.6); }
-    50% { box-shadow: inset 0 0 30px rgba(0, 230, 118, 0.8), 0 0 30px rgba(0, 230, 118, 1); }
-    100% { box-shadow: inset 0 0 10px rgba(0, 230, 118, 0.4), 0 0 10px rgba(0, 230, 118, 0.6); }
+/* ========================================================================= */
+/* --- GENEL STİLLER VE TEMA (Hiz Al Sayfası ile aynı) --- */
+/* ========================================================================= */
+body, html {
+  margin: 0; padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0D1117; 
+  color: #E6EDF3; 
+  min-height: 100vh;
+  padding-bottom: 70px;
+  line-height: 1.6;
 }
-.mining-area{ margin:20px 0; height:180px; display:flex; justify-content:center; align-items:center; background:#121212; border-radius:15px; border: 4px solid #00e676; animation: none;}
+.wrapper {
+  max-width: 550px; 
+  margin: 15px auto;
+  padding: 0 15px;
+}
+header {
+  background: #161B22;
+  padding: 15px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 800;
+  color: #F3BA2F; /* Ana sayfa başlık rengi */
+  text-shadow: 0 0 10px rgba(243, 186, 47, 0.6); 
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #F3BA2F;
+}
+header i { margin-right: 10px; }
 
-#hardwareIcon {
-    color: #00e676; 
-    text-shadow: 0 0 20px #00e676;
-    font-size: 100px;
-    animation: none; 
+/* ========================================================================= */
+/* --- KARTLAR VE BİLGİ ALANLARI --- */
+/* ========================================================================= */
+.card {
+  background: #161B22;
+  border-radius: 16px; 
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
+  border: 1px solid #2D333B;
+  transition: transform 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-2px);
+}
+.card h2 {
+    color: #00BFFF; /* Mavi Başlıklar */
+    font-size: 22px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #2D333B;
+    padding-bottom: 10px;
+    font-weight: 700;
+}
+.status-info {
+    text-align: center;
+    font-size: 14px;
+    color: #CCC;
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    background: #2D333B;
+    border-left: 5px solid #F3BA2F; /* Altın rengi uyarı */
 }
 
-.status-msg{ text-align:center; font-weight:700; margin-bottom:15px; padding: 10px; border-radius: 8px; font-size: 18px;}
+/* --- KAZIM ALANI --- */
+.mining-area {
+    text-align: center;
+    margin: 20px 0;
+}
+.mining-status {
+    font-size: 16px;
+    color: #4cd964;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+#currentHashrate {
+    font-size: 48px;
+    font-weight: 800;
+    color: #4cd964;
+    text-shadow: 0 0 20px rgba(76, 217, 100, 0.8);
+    transition: color 0.5s, text-shadow 0.5s;
+}
+.hashrate-unit {
+    font-size: 20px;
+    font-weight: 400;
+    color: #E6EDF3;
+    margin-left: 5px;
+}
 
-/* --- HASH BAR VE BUTONLAR --- */
-.hash-bar{ width:100%; height:25px; background:#333; border-radius:12px; overflow:hidden;}
-.hash-fill{ height:100%; width:0%; background:linear-gradient(90deg, #00e676, #ff9800); transition:width .5s ease-out;}
-.countdown{ text-align:center; margin-top:20px; font-size:26px; font-weight:900; color:#ff9800; text-shadow: 0 0 5px rgba(255, 152, 0, 0.4);}
-.button-container { display: flex; gap: 15px; margin-top: 25px;}
-.main-action-button{ flex-grow: 1; padding:15px; border:none; border-radius:10px; font-weight:900; font-size:17px; color:#121212; cursor:pointer; transition: all .3s;}
-#startBtn { background:#00e676; box-shadow:0 4px 15px rgba(0, 230, 118, 0.4);}
-#stopBtn { background: #ff0057; box-shadow: 0 4px 15px rgba(255, 0, 87, 0.4); display: none;}
+/* --- BAŞLAT/DURDUR BUTONU --- */
+#toggleMiningBtn {
+    padding: 18px 30px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 20px;
+    color: #0D1117;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 25px;
+    min-width: 250px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+#toggleMiningBtn i { margin-right: 10px; font-size: 22px; }
 
-/* Bakiye ve Aktarım Butonu */
-.balance-container{ background:#2a2a2a; border-radius:10px; padding:20px; margin-top:25px; font-weight:700; border: 2px solid #00b0ff; display: flex; justify-content: space-between; align-items: center; font-size: 16px;}
-.balance-container strong { color: #ff9800; font-size: 24px; margin-left: 8px; }
-#transferBtn { background: #ff9800; color: #121212; box-shadow: 0 3px 10px rgba(255, 152, 0, 0.4); padding: 10px 15px; font-size: 15px; font-weight: 700;}
+/* Durum: Kapalı (Başlat) */
+.mining-off {
+    background: #4CD964; /* Yeşil */
+    box-shadow: 0 0 20px rgba(76, 217, 100, 0.7), 0 5px 15px rgba(0,0,0,0.4);
+}
+.mining-off:hover { 
+    background: #66ff88; 
+    transform: scale(1.05); 
+}
 
-/* HIZ SEÇİMİ */
-.accordion-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px dashed #333; cursor: pointer; color: #00e676; font-size: 18px; font-weight: 700;}
-.speed-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #2a2a2a; border-radius: 8px; font-weight: 700; border: 2px solid transparent; cursor: pointer; flex-wrap: wrap; margin-bottom: 8px;}
-.activation-area { display: flex; gap: 10px; margin-top: 10px; width: 100%; align-items: center;}
-.activation-area input { flex-grow: 1; padding: 8px; border-radius: 5px; border: 1px solid #ff9800; background: #121212; color: #e0e0e0; font-weight: 500; font-size: 14px;}
-.activation-area button { background: #00b0ff; color: white; padding: 8px 15px; border-radius: 5px; font-size: 14px; font-weight: 700;}
+/* Durum: Açık (Durdur) */
+.mining-on {
+    background: #FF0057; /* Kırmızı */
+    box-shadow: 0 0 20px rgba(255, 0, 87, 0.7), 0 5px 15px rgba(0,0,0,0.4);
+}
+.mining-on:hover { 
+    background: #ff3377; 
+    transform: scale(1.05); 
+}
 
-/* DİĞER */
-.bottom-menu { position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around; background:#161b22; padding:10px 0; box-shadow:0 -3px 10px rgba(0,0,0,0.4); z-index:99;}
-.bottom-menu a { flex:1; text-align: center; margin:0 5px; padding:8px 0; font-size:12px; color:#777; font-weight: 600; }
+/* --- BAKIYE KARTI --- */
+.balance-display {
+    text-align: center;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background: #0D1117;
+    border: 1px solid #00BFFF;
+    box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.3);
+}
+.balance-display .label {
+    font-size: 16px;
+    color: #A0AEC0;
+    margin-bottom: 5px;
+}
+#miningBalance {
+    font-size: 36px;
+    font-weight: 800;
+    color: #00BFFF;
+    text-shadow: 0 0 15px rgba(0, 191, 255, 0.8);
+}
+#miningBalance span {
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 5px;
+}
+#speedMultiplier {
+    font-size: 18px;
+    font-weight: 700;
+    color: #F3BA2F;
+    margin-top: 10px;
+}
+
+/* ========================================================================= */
+/* --- ALT MENÜ (Hiz Al Sayfası ile aynı olmalı) --- */
+/* ========================================================================= */
+.bottom-menu { 
+    position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around;
+    background:#161B22; padding:10px 0; box-shadow:0 -5px 15px rgba(0,0,0,0.5); z-index:99;
+    border-top: 1px solid #2D333B;
+}
+.bottom-menu a {
+    flex:1; text-decoration: none; text-align: center; margin:0 5px; padding:8px 0;
+    font-size:12px; background:transparent; color:#777; border-radius:8px; transition:.3s;
+    font-weight: 600; 
+}
 .bottom-menu a i { font-size: 20px; display: block; margin-bottom: 4px; }
-.bottom-menu a.active { color:#00bfff; }
+.bottom-menu a.active { 
+    color:#F3BA2F; /* Ana sayfada aktif renk Altın olsun */
+    background: rgba(243, 186, 47, 0.1); 
+    text-shadow: 0 0 5px rgba(243, 186, 47, 0.6);
+}
 
-#floatingAlert { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1000; padding: 15px 25px; border-radius: 10px; font-weight: 700; color: #121212; box-shadow: 0 5px 20px rgba(0,0,0,0.4); opacity: 0; pointer-events: none;}
-.alert-success { background: #00e676; }
+/* Uyarı Sistemi (Hiz Al Sayfası ile aynı) */
+#floatingAlert {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+    z-index: 10000; padding: 15px 25px; border-radius: 10px; font-weight: 700; color: #121212;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4); transition: opacity 0.4s, transform 0.4s;
+    opacity: 0; pointer-events: none; max-width: 90%; text-align: center;
+}
+#floatingAlert.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.alert-success { background: #4cd964; }
 .alert-error { background: #ff0057; }
+.alert-info { background: #00bfff; }
 </style>
 </head>
 <body>
 
 <div id="floatingAlert" class="alert-info"></div>
+<header><i class="fas fa-hammer"></i> MiningPRO KONTROL PANELİ</header>
+<div class="wrapper">
 
-<div class="wrapper" id="appContent">
-    <header><i class="fas fa-server"></i> MiningPRO</header>
-  
     <div class="card">
-      <div class="accordion-header" id="settingsHeader">
-          ⚙️ Cihaz ve Kazım Ayarları
-          <i class="fas fa-chevron-down"></i>
-      </div>
-      
-      <div class="accordion-content open" id="settingsContent">
-          <div class="input-group">
-              <label for="cryptoDropdown">Kazım Başlatılacak Kripto:</label>
-              <div class="select-wrapper">
-                  <select id="cryptoDropdown">
-                      <option value="">-- Hedef Kriptoyu Seçin --</option>
-                      <option value="BTC">Bitcoin (BTC)</option>
-                      <option value="ETH">Ethereum (ETH)</option>
-                      <option value="USDT">Tether (USDT)</option>
-                      <option value="BNB">Binance Coin (BNB)</option>
-                      <option value="TRX">Tron (TRX)</option>
-                      <option value="DOGE">Dogecoin (DOGE)</option>
-                      <option value="TON">TON (The Open Network)</option>
-                  </select>
-              </div>
-          </div>
-      
-          <h3>Donanım Çarpanı (Aktif Süre: Gün)</h3>
-          <div class="speed-options" id="fanSpeedOptions">
-              <div class="speed-item active" data-speed="5" data-duration="Süresiz">
-                  <label><input type="radio" name="fanSpeed" value="5" checked> Standart Hız (5x)</label>
-              </div>
-              <div class="speed-item locked" data-speed="7" data-duration="10 Gün">
-                  <label><input type="radio" name="fanSpeed" value="7" disabled> Yüksek Hız (7x)</label>
-                  <div class="activation-area">
-                     <input type="text" maxlength="8" placeholder="8 Haneli Aktivasyon Key'i">
-                     <button onclick="activateSpeed(7, this)">AKTİF ET</button>
-                  </div>
-              </div>
-              <div class="speed-item locked" data-speed="10" data-duration="20 Gün">
-                  <label><input type="radio" name="fanSpeed" value="10" disabled> Uzman Hız (10x)</label>
-                  <div class="activation-area">
-                     <input type="text" maxlength="8" placeholder="8 Haneli Aktivasyon Key'i">
-                     <button onclick="activateSpeed(10, this)">AKTİF ET</button>
-                  </div>
-              </div>
-              <div class="speed-item locked" data-speed="15" data-duration="30 Gün">
-                  <label><input type="radio" name="fanSpeed" value="15" disabled> Ultra Hız (15x)</label>
-                  <div class="activation-area">
-                     <input type="text" maxlength="8" placeholder="8 Haneli Aktivasyon Key'i">
-                     <button onclick="activateSpeed(15, this)">AKTİF ET</button>
-                  </div>
-              </div>
-              <div class="speed-item locked" data-speed="20" data-duration="30 Gün">
-                  <label><input type="radio" name="fanSpeed" value="20" disabled> Maksimum Hız (20x)</label>
-                  <div class="activation-area">
-                     <input type="text" maxlength="8" placeholder="8 Haneli Aktivasyon Key'i">
-                     <button onclick="activateSpeed(20, this)">AKTİF ET</button>
-                  </div>
-              </div>
-          </div>
-      </div> </div>
-    <div id="selectMsg" class="status-msg" style="color:#ff9800;">Lütfen kazım yapmak istediğiniz kripto parayı seçin.</div>
-    
-    <div class="card" id="miningTab">
-      <h2><i class="fas fa-cogs"></i> Aktif Kazım Durumu</h2>
-      <div id="miningStatusMessage" class="status-msg" style="background:#333; color:#ff0057;">Kazım Kapalı. Donanım Boşta.</div>
-      
-      <div class="mining-area" id="miningArea">
-          <i id="hardwareIcon" class="fas fa-server"></i> 
-      </div>
-      
-      <div class="hash-container">
-        <div class="hash-bar"><div class="hash-fill" id="hashFill"></div></div>
-        <div class="hash-text" id="hashText">Aktif Hash Gücü: 0 KH/s (Çarpan: 5x)</div>
-      </div>
-      
-      <div class="countdown" id="countdown">Kazım Başlatılmayı Bekliyor</div>
-      
-      <div class="button-container">
-        <button id="startBtn" class="main-action-button"><i class="fas fa-play"></i> Başlat</button>
-        <button id="stopBtn" class="main-action-button"><i class="fas fa-stop"></i> Durdur</button>
-      </div>
-    
-      <div class="balance-container">
-          <span>Biriken Bakiye: <strong id="currentMiningBalance">0.00000</strong></span>
-          <button id="transferBtn" disabled><i class="fas fa-exchange-alt"></i> Cüzdana Aktar</button>
-      </div>
-    
-      <h3>Canlı Kazanç İşlemleri</h3>
-      <div class="feed-box" id="feedBox"></div>
-    </div>
-    
-    <div class="card" id="walletTab">
-        <h2><i class="fas fa-wallet"></i> Kullanılabilir Bakiye</h2>
-        <div class="balance-container" style="border-color:#00e676; background:#2a2a2a;">
-            Toplam Değer (USD Karşılığı): <strong id="totalBalanceWallet">$0.00</strong>
+        <h2>💰 Kazım Bakiyesi</h2>
+        <div class="balance-display">
+            <div class="label">Şu Ana Kadar Kazdığınız Miktar:</div>
+            <div id="miningBalance">0.000000 <span>USDT</span></div>
+            <div id="speedMultiplier">Aktif Hız: 5x</div>
         </div>
-        <div id="individualBalances" style="margin-top:15px; padding:10px; border:1px dashed #333;">
-            </div>
-    </div>
-    
-    <div class="exchange-panel" id="exchangePanel">
-        <h2><i class="fas fa-chart-line"></i> Anlık Kripto Piyasası</h2>
-        <div class="exchange-item exchange-header">
-            <span>Kripto</span>
-            <span style="text-align:right;">Fiyat (USD)</span>
-            <span style="text-align:right;">Değişim (24s)</span>
-        </div>
-        <div id="liveExchangeRates">
-            <p style="text-align:center; color:#ccc;">Veriler yükleniyor...</p>
+        <div class="status-info">
+            <i class="fas fa-info-circle"></i> Bakiyeniz otomatik olarak her 24 saatte bir ana cüzdanınıza aktarılır.
         </div>
     </div>
-    
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <span>✅ Veri Akışı Gerçek Zamanlı</span>
-            <span>🔑 Yeni Hız Key'leri İçin Cüzdanınızı Kontrol Edin</span>
-            <span>🛡️ Güvenlik Protokolleri Aktif: Veri Şifreleme</span>
-            <span>🚀 Donanım Çarpanınızı Yükseltin ve Kazancınızı Katlayın</span>
-        </div>
-    </div>
-    
-    <div class="footer-info">
-        <h3>📝 Başlangıç Kılavuzu</h3>
-        <p>MiningPRO, tamamen güvenli, yerel depolama tabanlı bir kontrol aracıdır. Başlamak için:</p>
-        <ol>
-            <li>Hedef **Kripto** (Örn: BTC, ETH) seçimi yapın.</li>
-            <li>İstediğiniz **Hız Çarpanını** seçin.</li>
-            <li>**"Başlat"** butonuna tıklayın.</li>
-        </ol>
+
+    <div class="card">
+        <h2>⚡ Canlı Madencilik Durumu</h2>
         
-        <div class="spacer"></div>
-    
-        <h3>🛡️ Gizlilik ve Güvenlik</h3>
-        <p>Tüm uygulama verileri (Bakiye, Hız Seçimleri, Kazım Durumu) **yalnızca cihazınızın yerel depolama alanında** saklanır. Harici sunucuya veri gönderilmez (Firebase bağlantısı sadece kullanıcı yetkilendirmesi içindir).</p>
-        
-        <div class="spacer"></div>
-    
-        <h3>🤝 Ortaklık ve Destek</h3>
-        <p>Destek ve işbirlikleri için: support@miningpro.tech</p>
+        <div class="mining-area">
+            <div class="mining-status" id="miningStatusText">Madencilik Şu An Kapalı.</div>
+            <div id="currentHashrate">0.00 <span class="hashrate-unit">MH/s</span></div>
+
+            <button id="toggleMiningBtn" class="mining-off" onclick="toggleMining()">
+                <i class="fas fa-play"></i> KAZIMI BAŞLAT
+            </button>
+        </div>
     </div>
+    
+    <div class="card">
+        <h2>📈 Verim Analizi</h2>
+        <div class="status-info" style="border-left: 5px solid #00BFFF;">
+            Günlük Tahmini Kazanç (5x Hız ile): **$0.80 - $1.20 USDT**
+            <br>
+            <a href="hiz-al.html" style="color:#00BFFF; font-weight:700;">Hızınızı Yükseltmek İçin Tıklayın!</a>
+        </div>
+    </div>
+
 </div>
 
-
-<div class="bottom-menu" id="bottomMenu">
-    <a href="#miningTab" class="active"><i class="fas fa-tachometer-alt"></i> Kazım</a>
-    <a href="#settingsContent"><i class="fas fa-bolt"></i> Hız Ayar</a>
-    <a href="#exchangePanel"><i class="fas fa-chart-line"></i> Piyasalar</a>
-    <a href="#walletTab"><i class="fas fa-wallet"></i> Cüzdanım</a>
+<div class="bottom-menu">
+  <a href="miningpro.html" id="tabMining" class="active"><i class="fas fa-tachometer-alt"></i> Kazım</a>
+  <a href="hiz-al.html" id="tabHizAl"><i class="fas fa-bolt"></i> Hız Al</a>
+  <a href="kazan.html" id="tabKazan"><i class="fas fa-trophy"></i> Kazan</a>
+  <a href="cüzdanım.html" id="tabWallet"><i class="fas fa-wallet"></i> Cüzdanım</a>
 </div>
 
 <script>
-// =========================================================================
-// FIREBASE / GİRİŞ KONTROLÜ (Yer Tutucu)
-// =========================================================================
-
-const INDEX_PAGE = "index.html"; 
-
-function checkUserAuthentication() {
-    // Gerçek bir uygulamada, burada Firebase auth kontrolü yapılır.
-    // Eğer kullanıcı kimlik doğrulamadan geçmediyse veya index.html'den gelmediyse yönlendirilir.
-
-    // Basit Yönlendirme Kontrolü (index.html'den mi gelindi?)
-    if (!document.referrer.includes(INDEX_PAGE)) {
-        // showFloatingAlert("Yetkisiz Erişim. Lütfen giriş sayfasından ('index.html') giriş yapınız.", 'error', 5000);
-        // window.location.href = INDEX_PAGE; 
-        
-        // Şimdilik sadece uyarı verelim, loop'a girmesin.
-        console.warn("Kullanıcı index.html'den gelmedi. Normalde burası giriş sayfasına yönlendirilir.");
+// Hiz Al sayfasından kopyalanan yardımcı fonksiyonlar
+function checkLogin() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn !== 'true') {
+        window.location.href = 'index.html'; 
+        return false; 
     }
-    
-    // Firebase Kullanıcı Verisi Çekme (Yer Tutucu)
-    // Eğer yetkilendirme başarılı ise:
-    // fetchUserDataFromFirebase(firebase.auth().currentUser.uid).then(data => {
-    //      loadAppState(data); 
-    // }).catch(() => {
-    //      loadAppState(); 
-    // });
-    
-    loadAppState(); // Şimdilik Firebase'den veri çekmeden direkt LocalStorage'dan yükleyelim.
+    return true;
+}
+if (!checkLogin()) {
+    throw new Error("Kullanıcı girişi yapılmamış.");
 }
 
-
-// =========================================================================
-// YEREL DEPOLAMA VE BAŞLANGIÇ VERİLERİ
-// =========================================================================
-
-let appState;
-let mineInterval;
-let countdownInterval;
-let priceUpdateInterval;
-let alertTimeout;
-
-const MINING_CYCLE_SECONDS = 12 * 60 * 60; // 12 Saat
-const DAY_MS = 24 * 60 * 60 * 1000;
-
-// Hız Aktivasyon Süreleri (Gün olarak)
-const KEY_DURATIONS = {
-    7: 10,  // 10 Gün
-    10: 20, // 20 Gün
-    15: 30, // 30 Gün
-    20: 30  // 30 Gün
-};
-
-// Hız Aktivasyon Anahtarları (8 Haneli)
-const KEYS = {
-    7: "HIZKEY7X",   
-    10: "UZMAN10X",  
-    15: "ULTRA15X", 
-    20: "MAKS20XG"   
-};
-
-const initialData = {
-    selectedCrypto: "",
-    mining: false,
-    hashPower: 1000, 
-    countdownTime: MINING_CYCLE_SECONDS, 
-    mainBalance: { USDT: 0, BTC: 0, ETH: 0, BNB: 0, TRX: 0, DOGE: 0, TON: 0 }, 
-    miningBalance: 0, 
-    fanSpeed: 5, 
-    purchasedSpeeds: [{ speed: 5, expiry: 0 }] 
-};
-
-const CRYPTOS = { 
-    USDT: { name: "Tether", emoji: "💵", icon: "fas fa-dollar-sign", color: "#26a69a" }, 
-    BTC: { name: "Bitcoin", emoji: "₿", icon: "fab fa-btc", color: "#f7931a" }, 
-    ETH: { name: "Ethereum", emoji: "Ξ", icon: "fab fa-ethereum", color: "#627eea" },
-    BNB: { name: "Binance Coin", emoji: "🟡", icon: "fas fa-coins", color: "#f3ba2f" },
-    TRX: { name: "Tron", emoji: "🔴", icon: "fas fa-bolt", color: "#eb0e29" },
-    DOGE: { name: "Dogecoin", emoji: "🐕", icon: "fas fa-dog", color: "#c2a633" },
-    TON: { name: "TON", emoji: "💎", icon: "fas fa-gem", color: "#0098ea" },
-};
-
-const LIVE_PRICES = {
-    USDT: { price: 1.0000, lastPrice: 1.0000, change: 0.00 },
-    BTC: { price: 72000, lastPrice: 72000, change: 0.00 }, 
-    ETH: { price: 4000, lastPrice: 4000, change: 0.00 },
-    BNB: { price: 600, lastPrice: 600, change: 0.00 },
-    TRX: { price: 0.12, lastPrice: 0.12, change: 0.00 },
-    DOGE: { price: 0.18, lastPrice: 0.18, change: 0.00 },
-    TON: { price: 8.00, lastPrice: 8.00, change: 0.00 },
-};
-
-const DIFFICULTY = {
-    BTC: 150000000, 
-    ETH: 80000000,
-    USDT: 5000000, 
-    BNB: 60000000,
-    TRX: 10000000,
-    DOGE: 20000000,
-    TON: 40000000,
-};
-
-const PRICE_UPDATE_INTERVAL = 10000; 
-
-function loadAppState() {
-    try {
-        const storedData = localStorage.getItem('miningProState');
-        if (storedData) {
-            const parsedData = JSON.parse(storedData);
-            
-            let finalSpeeds = parsedData.purchasedSpeeds || initialData.purchasedSpeeds;
-            if (finalSpeeds.length === 0 || !finalSpeeds.find(s => s.speed === 5)) {
-                 finalSpeeds.push({ speed: 5, expiry: 0 });
-            }
-
-            appState = { 
-                ...initialData, 
-                ...parsedData,
-                mainBalance: { ...initialData.mainBalance, ...parsedData.mainBalance },
-                purchasedSpeeds: finalSpeeds
-            };
-        } else {
-            appState = { ...initialData };
-        }
-    } catch (e) {
-        console.error("Yerel depolama verisi yüklenirken hata:", e);
-        appState = { ...initialData };
-    }
-}
-
-function saveAppState() {
-    try {
-        localStorage.setItem('miningProState', JSON.stringify(appState));
-        // Gerçek bir projede, burada Firebase'e de veri gönderilebilir.
-    } catch (e) {
-        console.error("Yerel depolama verisi kaydedilirken hata:", e);
-    }
-}
-
-// =========================================================================
-// HIZ KONTROLÜ
-// =========================================================================
-
-function checkSpeedExpirations() {
-    const now = Date.now();
-    let speedsToRemove = [];
-    let speedChanged = false;
-
-    appState.purchasedSpeeds.forEach(item => {
-        if (item.expiry !== 0 && item.expiry < now) {
-            speedsToRemove.push(item.speed);
-            
-            if (item.speed === appState.fanSpeed) {
-                appState.fanSpeed = 5;
-                showFloatingAlert(`${item.speed}x hız süreniz doldu! Hızınız 5x'e düşürüldü.`, 'error', 7000);
-                speedChanged = true;
-            }
-        }
-    });
-
-    if (speedsToRemove.length > 0) {
-        appState.purchasedSpeeds = appState.purchasedSpeeds.filter(item => !speedsToRemove.includes(item.speed));
-        
-        if (speedChanged) {
-            updateHashPowerDisplay();
-        }
-        saveAppState();
-    }
-}
-
-window.activateSpeed = function(speed, buttonElement) {
-    const durationDays = KEY_DURATIONS[speed];
-    const itemEl = buttonElement.closest('.speed-item');
-    const inputEl = itemEl.querySelector('input[type="text"]');
-    const enteredKey = inputEl.value.toUpperCase().trim();
-
-    if (enteredKey.length !== 8) {
-        showFloatingAlert("Aktivasyon Key'i 8 haneli olmalıdır.", 'error');
-        return;
-    }
-    
-    if (KEYS[speed] === enteredKey) {
-        const expiryTime = Date.now() + (durationDays * DAY_MS);
-        
-        const existingSpeed = appState.purchasedSpeeds.find(s => s.speed === speed);
-        if (existingSpeed) {
-            existingSpeed.expiry = expiryTime;
-        } else {
-            appState.purchasedSpeeds.push({ speed, expiry: expiryTime });
-        }
-        
-        appState.fanSpeed = speed;
-        
-        inputEl.value = ''; 
-        updateSpeedOptionStyles(); 
-        updateHashPowerDisplay();
-        saveAppState();
-        
-        showFloatingAlert(`✅ ${speed}x Hız başarıyla ${durationDays} günlük süreyle aktif edildi!`, 'success', 5000);
-    } else {
-        showFloatingAlert("Geçersiz Aktivasyon Key'i. Lütfen kontrol edin.", 'error');
-    }
-}
-
-// =========================================================================
-// DOM İŞLEMLERİ VE ARAYÜZ YÖNETİMİ
-// =========================================================================
-
+let alertTimeout = null;
 function showFloatingAlert(message, type = 'info', duration = 3000) {
     const alertEl = document.getElementById('floatingAlert');
     if (!alertEl) return;
-
     clearTimeout(alertTimeout);
-    
     alertEl.className = '';
     alertEl.classList.add(`alert-${type}`);
-    
     alertEl.innerText = message;
     alertEl.classList.add('show');
-
     alertTimeout = setTimeout(() => {
         alertEl.classList.remove('show');
     }, duration);
 }
 
-let cryptoDropdown, startBtn, stopBtn, transferBtn, hardwareIcon, hashFill, hashText, feedBox, countdownEl, miningStatusMessage, currentMiningBalance, individualBalances, selectMsg, settingsHeader, settingsContent, speedOptions, liveExchangeRates, miningArea;
-
-function getDOMElements() {
-    cryptoDropdown = document.getElementById("cryptoDropdown");
-    startBtn = document.getElementById("startBtn");
-    stopBtn = document.getElementById("stopBtn");
-    transferBtn = document.getElementById("transferBtn");
-    hardwareIcon = document.getElementById("hardwareIcon");
-    hashFill = document.getElementById("hashFill");
-    hashText = document.getElementById("hashText");
-    feedBox = document.getElementById("feedBox");
-    countdownEl = document.getElementById("countdown");
-    miningStatusMessage = document.getElementById("miningStatusMessage");
-    currentMiningBalance = document.getElementById("currentMiningBalance");
-    individualBalances = document.getElementById("individualBalances");
-    selectMsg = document.getElementById("selectMsg");
-    settingsHeader = document.getElementById("settingsHeader");
-    settingsContent = document.getElementById("settingsContent");
-    speedOptions = document.getElementById("fanSpeedOptions");
-    liveExchangeRates = document.getElementById("liveExchangeRates");
-    miningArea = document.getElementById("miningArea");
+function getAppState() {
+    const state = localStorage.getItem('miningProState');
+    return state ? JSON.parse(state) : {
+        isMining: false, // Yeni durum: Madencilik açık/kapalı
+        miningBalance: 0.0,
+        fanSpeed: 5, 
+        lastUpdateTime: Date.now(), // Son kazım zamanı
+        purchasedSpeeds: [],
+    };
 }
 
-function initializeUI() {
-    getDOMElements(); 
-    
-    checkSpeedExpirations();
-    
-    cryptoDropdown.value = appState.selectedCrypto || "";
-    
-    updateSpeedOptionStyles();
-    updateHashPowerDisplay();
-    updateBalanceDisplay();
-    updateMiningStatus(appState.mining); 
-    
-    if (appState.mining) {
-        startMiningProcesses();
-    }
-    
-    startPriceUpdate();
-    
-    startBtn.addEventListener('click', handleStartMining);
-    stopBtn.addEventListener('click', handleStopMining);
-    transferBtn.addEventListener('click', handleTransferBalance);
-    cryptoDropdown.addEventListener('change', handleCryptoChange);
-    settingsHeader.addEventListener('click', handleSettingsToggle);
-    
-    speedOptions.querySelectorAll('.speed-item').forEach(item => {
-        item.addEventListener('click', (event) => {
-            if (event.target.type !== 'text' && event.target.tagName !== 'BUTTON') {
-                handleSpeedChange.call(item);
-            }
-        });
-    });
-
-    document.querySelectorAll('.bottom-menu a').forEach(link => {
-        link.addEventListener('click', function() {
-             document.querySelectorAll('.bottom-menu a').forEach(a => a.classList.remove('active'));
-             this.classList.add('active');
-        });
-    });
-}
-
-function updateHashPowerDisplay() {
-    const effectiveHashPower = appState.hashPower * appState.fanSpeed;
-    hashText.innerText = `Aktif Hash Gücü: ${effectiveHashPower.toFixed(0)} KH/s (Çarpan: ${appState.fanSpeed}x)`;
-    hashFill.style.width = Math.min((effectiveHashPower / 20000) * 100, 100) + "%"; 
-}
-
-function updateSpeedOptionStyles() {
-    const isMining = appState.mining;
-    
-    speedOptions.querySelectorAll('.speed-item').forEach(item => {
-        const speed = parseInt(item.getAttribute('data-speed'));
-        const radio = item.querySelector('input[type="radio"]');
-        const activationArea = item.querySelector('.activation-area');
-        const durationDays = KEY_DURATIONS[speed];
-        
-        const purchasedItem = appState.purchasedSpeeds.find(item => item.speed === speed);
-        const isPurchased = !!purchasedItem;
-        const isExpired = purchasedItem && purchasedItem.expiry !== 0 && purchasedItem.expiry < Date.now();
-        
-        item.classList.remove("active", "mining-active", "locked");
-        if (activationArea) activationArea.style.display = 'none';
-
-        if (!isPurchased || isExpired) {
-            item.classList.add("locked");
-            radio.disabled = true;
-            if (activationArea) activationArea.style.display = 'flex';
-            
-            const label = item.querySelector('label');
-            const originalText = `Yüksek Hız (${speed}x)`;
-            
-            if (isExpired) {
-                 label.innerHTML = `<input type="radio" name="fanSpeed" value="${speed}" disabled> ${originalText} <span style="color:#ff0057; font-size:11px; font-weight:900;">(Süre Doldu!)</span>`;
-            } else if (speed !== 5) {
-                 label.innerHTML = `<input type="radio" name="fanSpeed" value="${speed}" disabled> ${originalText} <span style="color:#ff9800; font-size:11px; font-weight:900;">(${durationDays} Gün Key Gerekli)</span>`;
-            }
-
-        } else {
-            radio.disabled = false;
-            if (purchasedItem.expiry !== 0) {
-                 const remainingTime = purchasedItem.expiry - Date.now();
-                 const days = Math.floor(remainingTime / DAY_MS);
-                 const hours = Math.floor((remainingTime % DAY_MS) / (1000 * 60 * 60));
-                 const label = item.querySelector('label');
-                 const originalText = `Yüksek Hız (${speed}x)`;
-                 label.innerHTML = `<input type="radio" name="fanSpeed" value="${speed}"> ${originalText} <span style="color:#00b0ff; font-size:11px; font-weight:900;">(${days}g ${hours}s Kaldı)</span>`;
-
-            }
-        }
-
-        if (isMining) {
-             item.classList.add("mining-active");
-             radio.checked = (speed === appState.fanSpeed);
-        } else {
-             if (speed === appState.fanSpeed) {
-                item.classList.add("active");
-                radio.checked = true;
-            } else {
-                radio.checked = false;
-            }
-        }
-    });
-}
-
-function handleCryptoChange() {
-    const newCrypto = cryptoDropdown.value;
-    if (newCrypto === appState.selectedCrypto) return;
-
-    if (appState.mining) {
-        selectMsg.style.color = "#ff0057";
-        selectMsg.innerText = "Kripto değiştirmek için önce kazımı durdurun!";
-        cryptoDropdown.value = appState.selectedCrypto; 
-        return;
-    }
-
-    appState.selectedCrypto = newCrypto;
-    appState.miningBalance = 0; 
-    updateBalanceDisplay();
-    saveAppState();
-    
-    if (appState.selectedCrypto) {
-        selectMsg.style.color = "#00e676";
-        showFloatingAlert(`${CRYPTOS[appState.selectedCrypto].emoji} Kazım hedefi ayarlandı: ${appState.selectedCrypto}`, 'success');
-        selectMsg.innerText = `${CRYPTOS[appState.selectedCrypto].emoji} Kazım hedefi ayarlandı: ${appState.selectedCrypto}`;
-    } else {
-        selectMsg.style.color = "#ff9800";
-        selectMsg.innerText = "Lütfen bir kripto seçin!";
-    }
-}
-
-function handleSettingsToggle() {
-    if (appState.mining) {
-        showFloatingAlert("Aktif kazım sırasında ayarlar kilitlidir.", 'error');
-        return;
-    }
-    settingsContent.classList.toggle('open');
-    settingsHeader.classList.toggle('open');
-}
-
-function handleSpeedChange() {
-    const item = this; 
-    const speed = parseInt(item.getAttribute('data-speed'));
-    
-    const purchasedItem = appState.purchasedSpeeds.find(s => s.speed === speed);
-    const isPurchased = !!purchasedItem;
-    const isExpired = purchasedItem && purchasedItem.expiry !== 0 && purchasedItem.expiry < Date.now();
-    
-    if (appState.mining) {
-         showFloatingAlert("Hız değiştirmek için lütfen önce kazımı durdurun!", 'error');
-         return;
-    }
-    
-    if (!isPurchased || isExpired) {
-        showFloatingAlert("Bu hız aktif değil. Lütfen Key girerek aktif edin.", 'error', 4000);
-        speedOptions.querySelector(`[data-speed="${appState.fanSpeed}"] input`).checked = true;
-        updateSpeedOptionStyles();
-        return;
-    }
-
-    appState.fanSpeed = speed;
-    updateSpeedOptionStyles(); 
-    updateHashPowerDisplay();
-    
-    showFloatingAlert(`Yeni Donanım Çarpanı ayarlandı: ${appState.fanSpeed}x`, 'info');
-    saveAppState();
-}
-
-function handleStartMining(){
-    if(!appState.selectedCrypto || appState.selectedCrypto === ""){
-        showFloatingAlert("Lütfen önce Kazım Hedefini seçin!", 'error');
-        return;
-    }
-    if(appState.mining) return;
-    
-    appState.mining = true;
-    startMiningProcesses();
-    updateMiningStatus(true);
-    showFloatingAlert(`${appState.selectedCrypto} Kazımı Başlatıldı!`, 'success', 3500);
-    selectMsg.innerText = "";
-    saveAppState();
-}
-
-function handleStopMining() {
-    appState.mining = false;
-    stopMiningProcesses();
-    updateMiningStatus(false);
-    showFloatingAlert("Kazım başarıyla durduruldu. Donanım boşta.", 'info');
-    selectMsg.style.color = "#00e676";
-    selectMsg.innerText = "Kazım başarıyla durduruldu. Donanım boşta.";
-    saveAppState();
-}
-
-function handleTransferBalance() {
-    const transferredAmount = parseFloat(appState.miningBalance.toFixed(8)); 
-    const selectedCrypto = appState.selectedCrypto;
-
-    if(transferredAmount <= 0.00000001 || !selectedCrypto) {
-        showFloatingAlert("Aktarılacak bakiyeniz bulunmamaktadır.", 'error');
-        return;
-    }
-
-    const currentMainBalance = appState.mainBalance[selectedCrypto] || 0;
-    const newMainBalance = parseFloat((currentMainBalance + transferredAmount).toFixed(8));
-    
-    appState.mainBalance[selectedCrypto] = newMainBalance; 
-    appState.miningBalance = 0; 
-    
-    updateBalanceDisplay();
-    saveAppState(); 
-    
-    addFeed(`➡️ ${transferredAmount.toFixed(8)} ${selectedCrypto} bakiye, güvenli cüzdana aktarıldı.`);
-    showFloatingAlert(`Başarılı! ${transferredAmount.toFixed(8)} ${selectedCrypto} ana cüzdana aktarıldı.`, 'success', 4000);
-}
-
-function updateMiningStatus(isActive) {
-    const cryptoEmoji = appState.selectedCrypto && CRYPTOS[appState.selectedCrypto] ? CRYPTOS[appState.selectedCrypto].emoji : '';
-    
-    cryptoDropdown.disabled = isActive;
-    updateSpeedOptionStyles(); 
-
-    settingsHeader.classList.toggle('locked', isActive);
-    
-    if (isActive) {
-        settingsContent.classList.remove("open"); 
-        miningStatusMessage.innerHTML = `${cryptoEmoji} AKTİF | Hedef: ${appState.selectedCrypto} (Çarpan: ${appState.fanSpeed}x)`;
-        miningStatusMessage.style.background = "#00331a";
-        miningStatusMessage.style.color = "#00e676";
-        startBtn.style.display = 'none'; 
-        stopBtn.style.display = 'flex'; 
-        
-        miningArea.style.animation = `pulse 2s infinite ease-in-out`; 
-
-    } else {
-        miningStatusMessage.innerText = "Kazım Kapalı. Donanım Boşta.";
-        miningStatusMessage.style.background = "#333";
-        miningStatusMessage.style.color = "#ff0057";
-        countdownEl.innerText = "Kazım Başlatılmayı Bekliyor";
-        startBtn.style.display = 'flex'; 
-        stopBtn.style.display = 'none'; 
-        
-        miningArea.style.animation = 'none';
-        miningArea.style.boxShadow = 'inset 0 0 30px rgba(0, 230, 118, 0.4), 0 0 20px rgba(0, 230, 118, 0.6)';
-    }
-}
-
-function startMiningProcesses() {
-    stopMiningProcesses(); 
-    
-    mineInterval = setInterval(mineLoop, 1000); 
-    countdownInterval = setInterval(countdownLoop, 1000);
-}
-
-function stopMiningProcesses() {
-    clearInterval(mineInterval);
-    clearInterval(countdownInterval);
-    mineInterval = null;
-    countdownInterval = null;
-    
-    saveAppState();
-}
-
-function mineLoop(){
-  if(!appState.mining || !appState.selectedCrypto) return;
-  
-  const selectedCrypto = appState.selectedCrypto;
-  const difficulty = DIFFICULTY[selectedCrypto];
-  
-  const baseRate = (appState.hashPower * appState.fanSpeed) / difficulty; 
-  const randomness = (Math.random() * 0.4) + 0.8; 
-  
-  const gain = (baseRate * randomness);
-  
-  appState.miningBalance = parseFloat((appState.miningBalance + gain).toFixed(8));
-  
-  updateHashPowerDisplay();
-  
-  if (appState.countdownTime % 5 === 0) {
-      addFeed(`✅ +${gain.toFixed(8)} ${selectedCrypto} kazıldı.`);
-  }
-  updateBalanceDisplay();
-  
-  if (appState.countdownTime % 30 === 0) {
-      saveAppState();
-  }
-}
-
-function countdownLoop(){
-  if(appState.countdownTime <= 0){
-      showFloatingAlert("12 Saatlik Kazım Döngüsü Tamamlandı! Lütfen tekrar başlatın.", 'error', 5000);
-      countdownEl.innerText = "Kazım Döngüsü Tamamlandı! Lütfen tekrar başlatın.";
-      appState.mining = false;
-      stopMiningProcesses();
-      
-      appState.countdownTime = MINING_CYCLE_SECONDS; 
-      
-      saveAppState();
-      updateMiningStatus(false);
-      return;
-  }
-  
-  appState.countdownTime--;
-  
-  let h = String(Math.floor(appState.countdownTime / 3600)).padStart(2, "0");
-  let m = String(Math.floor((appState.countdownTime % 3600) / 60)).padStart(2, "0");
-  let s = String(appState.countdownTime % 60).padStart(2, "0");
-  
-  countdownEl.innerText = `Kalan Süre: ${h}:${m}:${s}`;
-}
-
-function addFeed(text){
-  const line=document.createElement("div");
-  line.className="feed-line";
-  line.innerText=`[${new Date().toLocaleTimeString('tr-TR')}] ${text}`;
-  feedBox.prepend(line);
-  if(feedBox.children.length > 20) {
-      feedBox.removeChild(feedBox.lastChild);
-  }
-}
-
-function updateLivePrices() {
-    let html = '';
-    let totalValueUSD = 0;
-
-    for (const crypto in LIVE_PRICES) {
-        if (crypto !== 'USDT') {
-            const currentData = LIVE_PRICES[crypto];
-            const currentPrice = currentData.price;
-            
-            const changeAmount = (Math.random() - 0.5) * currentPrice * 0.015;
-            const newPrice = Math.max(0.0001, currentPrice + changeAmount); 
-            
-            const percentChange = ((newPrice - currentData.lastPrice) / currentData.lastPrice) * 100;
-
-            currentData.price = newPrice;
-            currentData.change = percentChange;
-        }
-    }
-    
-    for (const crypto in LIVE_PRICES) {
-        const data = LIVE_PRICES[crypto];
-        const price = data.price;
-        const change = data.change;
-        const cryptoInfo = CRYPTOS[crypto] || {};
-
-        totalValueUSD += (appState.mainBalance[crypto] || 0) * price;
-        
-        const changeClass = change >= 0 ? 'positive' : 'negative';
-        const changeSign = change >= 0 ? '▲' : '▼';
-
-        html += `
-            <div class="exchange-item">
-                <span class="crypto-label"><i class="${cryptoInfo.icon}" style="color:${cryptoInfo.color}; margin-right:8px;"></i> ${crypto}</span>
-                <span class="price-value">$${price.toFixed(crypto === 'BTC' ? 0 : 4)}</span>
-                <span class="change-percent ${changeClass}">${changeSign} ${Math.abs(change).toFixed(2)}%</span>
-            </div>
-        `;
-    }
-
-    liveExchangeRates.innerHTML = html;
-    
-    const totalBalanceWallet = document.getElementById("totalBalanceWallet");
-    if(totalBalanceWallet) totalBalanceWallet.innerText = `$${totalValueUSD.toFixed(2)}`; 
-    
-    updateBalanceDisplay();
-    
-    for (const crypto in LIVE_PRICES) {
-        LIVE_PRICES[crypto].lastPrice = LIVE_PRICES[crypto].price;
-    }
-}
-
-function startPriceUpdate() {
-    updateLivePrices(); 
-    priceUpdateInterval = setInterval(updateLivePrices, PRICE_UPDATE_INTERVAL); 
-}
-
-function updateBalanceDisplay(){
-  let totalUSDTEquivalent = 0; 
-  individualBalances.innerHTML = "";
-  
-  for (const crypto in appState.mainBalance) {
-      const balance = appState.mainBalance[crypto] || 0;
-      const priceData = LIVE_PRICES[crypto] || { price: 0 };
-      const price = priceData.price;
-      
-      totalUSDTEquivalent += balance * price; 
-      
-      const icon = CRYPTOS[crypto] ? CRYPTOS[crypto].icon : 'fas fa-coins';
-
-      individualBalances.innerHTML += `
-        <p style="color:#00b0ff;"><i class="${icon}" style="color:${CRYPTOS[crypto].color}; margin-right:5px;"></i> ${crypto}: <span style="color:#e0e0e0; font-weight:700;">${balance.toFixed(8)}</span> (Değer: $${(balance * price).toFixed(2)})</p>
-      `;
-  }
-  
-  const miningPrice = LIVE_PRICES[appState.selectedCrypto] ? LIVE_PRICES[appState.selectedCrypto].price : 0;
-  const miningValueUSD = appState.miningBalance * miningPrice;
-  currentMiningBalance.innerHTML = `${appState.miningBalance.toFixed(8)} ${appState.selectedCrypto || 'Koin Seçilmedi'} <span style="font-size:16px;">($${miningValueUSD.toFixed(4)})</span>`;
-  
-  transferBtn.disabled = appState.miningBalance <= 0.00000001 || !appState.selectedCrypto; 
-
-  const totalBalanceWallet = document.getElementById("totalBalanceWallet");
-  if(totalBalanceWallet) totalBalanceWallet.innerText = `$${totalUSDTEquivalent.toFixed(2)}`; 
+function saveAppState(state) {
+    localStorage.setItem('miningProState', JSON.stringify(state));
 }
 
 // =========================================================================
-// KRİTİK BAŞLANGIÇ NOKTASI
+// --- MADENCİLİK İŞLEVİ ---
 // =========================================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    checkUserAuthentication();
-    initializeUI();
-    showFloatingAlert("MiningPRO Kontrol Paneli Başlatıldı.", 'info', 3000);
-});
+// Hız çarpımına göre MH/s değerini hesapla
+function calculateHashrate(speedMultiplier) {
+    // 5x (Temel) için 0.2 MH/s varsayalım. Her 1x artış için 0.04 MH/s ekleyelim.
+    // 20x Max hız için: 0.2 + (15 * 0.04) = 0.8 MH/s
+    const BASE_HASHRATE = 0.2; 
+    const RATE_PER_MULTIPLIER = 0.04; 
+    return (BASE_HASHRATE + (speedMultiplier - 5) * RATE_PER_MULTIPLIER).toFixed(2);
+}
 
-window.onbeforeunload = saveAppState;
+// Bakiye simülasyonu
+function updateMiningBalance(appState) {
+    const now = Date.now();
+    const timeElapsedHours = (now - appState.lastUpdateTime) / (1000 * 60 * 60); // Saat cinsinden geçen süre
+
+    if (appState.isMining && timeElapsedHours > 0) {
+        // Günlük kazanç simülasyonu: 5x hız için günde 1.0 USDT
+        const BASE_DAILY_USDT = 1.0; 
+        
+        // Hız çarpanına göre günlük kazancı ayarla (Örn: 20x hız 4 kat fazla kazandırsın)
+        const dailyRate = BASE_DAILY_USDT * (appState.fanSpeed / 5); 
+        
+        // Geçen süreye göre kazanç hesaplama
+        const earnings = dailyRate * timeElapsedHours / 24;
+        
+        appState.miningBalance += earnings;
+        appState.lastUpdateTime = now; // Zamanı güncelle
+        saveAppState(appState);
+    }
+}
+
+// UI Güncellemesi
+function updateUI(appState) {
+    const btn = document.getElementById('toggleMiningBtn');
+    const statusText = document.getElementById('miningStatusText');
+    const hashrateDisplay = document.getElementById('currentHashrate');
+    const balanceDisplay = document.getElementById('miningBalance');
+    const speedDisplay = document.getElementById('speedMultiplier');
+    
+    // Bakiye ve Hız Güncelleme
+    balanceDisplay.innerHTML = `${appState.miningBalance.toFixed(6)} <span>USDT</span>`;
+    speedDisplay.innerText = `Aktif Hız: ${appState.fanSpeed}x`;
+    
+    // Buton ve Durum Güncelleme
+    if (appState.isMining) {
+        btn.classList.remove('mining-off');
+        btn.classList.add('mining-on');
+        btn.innerHTML = '<i class="fas fa-pause"></i> KAZIMI DURDUR';
+        statusText.style.color = '#4cd964';
+        statusText.innerText = 'Madencilik AKTİF ve Çalışıyor.';
+        
+        // Hashrate güncelleme
+        const currentHashrate = calculateHashrate(appState.fanSpeed);
+        hashrateDisplay.innerHTML = `${currentHashrate} <span class="hashrate-unit">MH/s</span>`;
+        hashrateDisplay.style.color = '#4cd964';
+        hashrateDisplay.style.textShadow = '0 0 20px rgba(76, 217, 100, 0.8)';
+        
+    } else {
+        btn.classList.remove('mining-on');
+        btn.classList.add('mining-off');
+        btn.innerHTML = '<i class="fas fa-play"></i> KAZIMI BAŞLAT';
+        statusText.style.color = '#ff0057';
+        statusText.innerText = 'Madencilik Şu An Kapalı.';
+        
+        // Hashrate sıfırlama
+        hashrateDisplay.innerHTML = `0.00 <span class="hashrate-unit">MH/s</span>`;
+        hashrateDisplay.style.color = '#E6EDF3';
+        hashrateDisplay.style.textShadow = 'none';
+    }
+}
+
+// Buton tıklama fonksiyonu
+window.toggleMining = function() {
+    let appState = getAppState();
+    
+    appState.isMining = !appState.isMining;
+    appState.lastUpdateTime = Date.now(); // Durum değiştiği an zamanı sıfırla
+
+    if (appState.isMining) {
+        showFloatingAlert(`Kazım ${appState.fanSpeed}x hız ile başlatıldı!`, 'success');
+        // Madencilik açıksa, bakiye güncelleme döngüsünü başlat
+        startMiningLoop();
+    } else {
+        showFloatingAlert('Kazım durduruldu. Tekrar başlatabilirsiniz.', 'error');
+        // Madencilik durduysa, döngüyü durdur
+        clearInterval(miningInterval);
+    }
+    
+    saveAppState(appState);
+    updateUI(appState);
+}
+
+
+let miningInterval; // Kazım döngüsünü tutacak değişken
+
+function startMiningLoop() {
+    // Önceki döngüyü temizle
+    if (miningInterval) {
+        clearInterval(miningInterval);
+    }
+    
+    // Her 5 saniyede bir bakiye ve UI'ı güncelle
+    miningInterval = setInterval(() => {
+        let appState = getAppState();
+        if (appState.isMining) {
+            updateMiningBalance(appState);
+            updateUI(appState);
+        } else {
+            // Eğer isMining false ise interval'ı temizle
+            clearInterval(miningInterval);
+        }
+    }, 5000); 
+}
+
+
+// Başlangıç Fonksiyonu
+function init() {
+    let appState = getAppState();
+    
+    // Bakiye güncellemesini başlangıçta bir kez yap (kapalı olsa bile geçen süreyi hesaplamak için)
+    updateMiningBalance(appState); 
+    
+    // UI'ı mevcut duruma göre ayarla
+    updateUI(appState); 
+
+    // Eğer madencilik açıksa, döngüyü başlat
+    if (appState.isMining) {
+        startMiningLoop();
+    }
+}
+
+// Sayfa yüklendiğinde başlat
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
