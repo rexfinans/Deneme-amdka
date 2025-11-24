@@ -9,6 +9,7 @@
 <style>
 /* ========================================================================= */
 /* --- 1. GENEL STİLLER & MERKEZLEME & ANİMASYONLAR --- */
+/* (Tüm stil kodlarınız olduğu gibi korundu) */
 /* ========================================================================= */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -203,6 +204,7 @@ section {
 
 /* ========================================================================= */
 /* --- 4. MODAL (Giriş/Kayıt) STİLLERİ --- */
+/* (Tüm modal stilleriniz korundu) */
 /* ========================================================================= */
 .modal{
     display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
@@ -284,6 +286,7 @@ section {
 
 /* ========================================================================= */
 /* --- 5. RESPONSIVE (Küçük Ekranlar İçin) --- */
+/* (Tüm responsive stilleriniz korundu) */
 /* ========================================================================= */
 @media(max-width:768px) {
     .navbar nav { display: none; }
@@ -514,7 +517,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBwpgITzHh2K3oYTRDaNbGVexPR8IcqXBU",
   authDomain: "coinbase-a1aca.firebaseapp.com",
   projectId: "coinbase-a1aca",
-  storageBucket: "coinbase-a1aca.firebasestorage.app",
+  storageBucket: "coinbase-a1aca.firebaseapp.com",
   messagingSenderId: "596259885244",
   appId: "1:596259885244:web:186df79a6ccdc96f0d00b9",
   measurementId: "G-Q4SMPE62HF"
@@ -649,6 +652,7 @@ registerBtn.onclick = async () => {
     // 2. Davet Kodu Kontrolü ve Yönlendirme
     let referrerUID = null;
     if (referrer) {
+        // Davet kodunun varlığını kontrol et
         const referrerSnap = await getDoc(doc(db, "users", referrer));
         if (referrerSnap.exists()) {
             referrerUID = referrer;
@@ -723,16 +727,21 @@ loginBtn.onclick = async () => {
         
         // Önceki butonu kaldır (varsa)
         const existingBtn = document.querySelector('#loginForm button:last-of-type');
+        // loginBtn'in kendisi değilse kaldır
         if (existingBtn && existingBtn !== loginBtn) existingBtn.remove();
 
         document.getElementById("loginForm").appendChild(resendBtn);
         
         resendBtn.onclick = async () => {
             try {
-                await sendEmailVerification(user);
-                loginMessage.className = "message success";
-                loginMessage.innerText = "Doğrulama e-postası tekrar gönderildi! Lütfen Gelen Kutunuzu kontrol edin.";
-                resendBtn.remove();
+                // Kullanıcı tekrar giriş yapabilirse, Firebase'den user nesnesini tekrar al
+                const currentUser = auth.currentUser || user;
+                if(currentUser) {
+                    await sendEmailVerification(currentUser);
+                    loginMessage.className = "message success";
+                    loginMessage.innerText = "Doğrulama e-postası tekrar gönderildi! Lütfen Gelen Kutunuzu kontrol edin.";
+                    resendBtn.remove();
+                }
             } catch (error) {
                 loginMessage.className = "message error";
                 loginMessage.innerText = "Hata oluştu. Tekrar deneyin. ";
@@ -760,15 +769,16 @@ loginBtn.onclick = async () => {
 }
 
 // -------------------------------------------------------------------------
-// OTOMATİK YÖNLENDİRME (Kullanıcı zaten giriş yapmışsa)
+// ✅ OTOMATİK İLERİ YÖNLENDİRME (Kullanıcı zaten giriş yapmışsa)
+// Bu kod index.html için uygundur ve döngüye girmeyi engeller.
 // -------------------------------------------------------------------------
 onAuthStateChanged(auth, (user) => {
     if (user && user.emailVerified) {
         // Kullanıcı giriş yapmış ve e-postası doğrulanmışsa, doğrudan panele yönlendir
         window.location.href = "miningpro.html";
     }
-    // Eğer giriş yapmamışsa veya e-posta doğrulamamışsa, sayfada kalır ve giriş yapması istenir.
 });
+
 
 // -------------------------------------------------------------------------
 // CANVAS KRİPTO ANİMASYONU (Mevcut kodunuz)
@@ -819,14 +829,6 @@ function animate() {
 }
 animate();
 </script>
-// index.html dosyasının en başındaki script bloğuna ekle:
-
-onAuthStateChanged(auth, (user) => {
-    if (user && user.emailVerified) {
-        // Kullanıcı giriş yapmışsa ve e-postası doğrulanmışsa, doğrudan panele yönlendir
-        window.location.href = "miningpro.html";
-    }
-});
     
 </body>
 </html>
