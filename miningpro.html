@@ -432,5 +432,21 @@ function init() {
 // Sayfa yüklendiğinde başlat
 document.addEventListener('DOMContentLoaded', init);
 </script>
+  // miningpro.html dosyasının en başındaki script bloğuna ekle:
+
+onAuthStateChanged(auth, (user) => {
+    if (!user || !user.emailVerified) {
+        // Kullanıcı giriş yapmamışsa veya e-postası doğrulanmamışsa, giriş sayfasına geri gönder.
+        window.location.href = "index.html"; 
+    } else {
+        // Giriş yapıldıysa sayfa yüklemesini başlat
+        init(); 
+        startMiningLoop();
+    }
+});
+
+// ❗ ÖNEMLİ: Bu kodu ekledikten sonra, bu satırı silin veya yorumlayın:
+// document.addEventListener('DOMContentLoaded', init);
+  
 </body>
 </html>
