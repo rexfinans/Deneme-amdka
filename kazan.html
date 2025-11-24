@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MiningPRO - Kazan & Ödüller</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght400;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ========================================================================= */
 /* --- GENEL STİLLER VE TEMA --- */
@@ -309,31 +309,11 @@ header i { margin-right: 10px; }
   <a href="#" id="tabKazan" class="active"><i class="fas fa-trophy"></i> Kazan</a>
   <a href="cüzdanım.html" id="tabWallet"><i class="fas fa-wallet"></i> Cüzdanım</a>
 </div>
-<script>
-/* ========================================================================= */
-/* --- GİRİŞ KONTROLÜ (GÜVENLİK) --- */
-/* Bu kod, Firebase yüklenmeden önce çalışır ve giriş yapmayanı engeller. */
-/* ========================================================================= */
-function checkLogin() {
-    // Varsayılan kontrol: `isLoggedIn` bayrağını kontrol et
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    
-    if (isLoggedIn !== 'true') {
-        // Hızlı yönlendirme (index.html'ye)
-        window.location.href = 'index.html'; 
-        // Yönlendirme tamamlanana kadar sayfanın yüklenmesini durdur
-        return false; 
-    }
-    return true;
-}
-
-if (!checkLogin()) {
-    // Eğer yönlendirme gerçekleştiyse, aşağıdaki kodların çalışmasını engelle.
-    throw new Error("Kullanıcı girişi yapılmamış. Yönlendiriliyor...");
-}
-</script>
-
 <script type="module">
+/* ========================================================================= */
+/* --- YENİ GİRİŞ KONTROLÜ (FIREBASE TABANLI) --- */
+/* Eski LocalStorage kontrolü kaldırıldı. Artık sadece bu blok çalışır. */
+/* ========================================================================= */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc, increment, runTransaction } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
@@ -379,16 +359,20 @@ const REWARDS = {
 };
 
 onAuthStateChanged(auth, async (user) => {
-    if (user) {
+    if (user && user.emailVerified) { // E-posta doğrulaması da kontrol edildi
         currentUser = user;
         
         await loadUserData(user.uid);
         renderRewards();
     } else {
-        // Firebase Auth'a göre giriş yapmamışsa (Daha yavaş ama kesin kontrol)
+        // Kullanıcı giriş yapmamışsa VEYA e-postası doğrulanmamışsa, anında giriş sayfasına yönlendir.
         messageEl.style.color = '#ff0057';
-        messageEl.innerText = "Oturum açma hatası. Giriş sayfasına yönlendiriliyorsunuz...";
-        setTimeout(() => { window.location.href = "index.html"; }, 3000); 
+        messageEl.innerText = "Oturum açma hatası veya e-posta doğrulanmamış. Giriş sayfasına yönlendiriliyorsunuz...";
+        setTimeout(() => { 
+             // LocalStorage'ı da temizleyelim ki, önceki sayfadaki eski kontrol de tetiklenmesin.
+             localStorage.removeItem('isLoggedIn'); 
+             window.location.href = "index.html"; 
+        }, 500); // 0.5 saniye bekleme ile anında yönlendirme
     }
 });
 
