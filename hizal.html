@@ -460,29 +460,6 @@ header i { margin-right: 10px; }
 
 <script>
 /* ========================================================================= */
-/* --- GİRİŞ KONTROLÜ (GÜVENLİK) --- */
-/* ========================================================================= */
-function checkLogin() {
-    // 'isLoggedIn' bayrağını kontrol et. Giriş sayfanızda bunu 'true' olarak ayarlamalısınız.
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    
-    if (isLoggedIn !== 'true') {
-        // Hızlı yönlendirme (index.html'ye)
-        window.location.href = 'index.html'; 
-        return false; 
-    }
-    return true;
-}
-
-// Sayfa yüklenir yüklenmez kontrolü çalıştır
-if (!checkLogin()) {
-    // Yönlendirme gerçekleştiyse, aşağıdaki kodların çalışmasını engelle.
-    throw new Error("Kullanıcı girişi yapılmamış. Yönlendiriliyor...");
-}
-// Giriş başarılıysa, diğer kodlar buradan devam eder...
-
-
-/* ========================================================================= */
 /* UYARI SİSTEMİ (FLOATING ALERT) */
 /* ========================================================================= */
 let alertTimeout = null;
@@ -500,16 +477,14 @@ function showFloatingAlert(message, type = 'info', duration = 3000) {
 }
 
 /* ========================================================================= */
-/* LOKAL VERİ YÖNETİMİ */
+/* LOKAL VERİ YÖNETİMİ (BU KISIM FIREBASE MODÜLÜ İÇİNE TAŞINACAK) */
 /* ========================================================================= */
 function getAppState() {
-    const state = localStorage.getItem('miningProState');
-    return state ? JSON.parse(state) : {
-        selectedCrypto: 'USDT', 
-        miningBalance: 0,
-        mainBalance: { USDT: 100.00, BTC: 0.0001, ETH: 0.002 },
-        fanSpeed: 5, // Başlangıç hızı
-        purchasedSpeeds: [],
+    // Bu fonksiyon sadece geçici durum için tutuldu. Verilerinizi Firebase'den çekeceksiniz.
+    // Başlangıçta 5x hızı gösterilir.
+    return {
+        fanSpeed: 5, 
+        // ... diğer lokal verileriniz
     };
 }
 
@@ -562,18 +537,12 @@ function updateSpeedStatusDisplay(currentSpeed) {
         }
 
         // --- GÖSTERGE İĞNESİ KONUMUNU HESAPLAMA ---
-        // Hız aralığına göre (5x'ten 20x'e) iğnenin sol konumunu (0% - 100%) ayarla.
         const speedRange = MAX_SPEED - MIN_SPEED; 
-        // currentSpeed'in aralık içindeki oranı
         const speedRatio = Math.min(1, Math.max(0, (currentSpeed - MIN_SPEED) / speedRange)); 
-        
-        // Pin konumunu % olarak ayarla
         const pinPosition = speedRatio * 100; 
 
         if (speedPinEl) {
-            // İğne konumunu ayarla ve rengini eşitle
-            // CSS transition ile hareket yumuşak olacaktır.
-            speedPinEl.style.left = `calc(${pinPosition}% - 5px)`; // 5px iğnenin yarısı kadar sola kaydırma
+            speedPinEl.style.left = `calc(${pinPosition}% - 5px)`; 
             speedPinEl.style.background = pinColor; 
             speedPinEl.style.boxShadow = `0 0 10px ${pinColor}`;
         }
@@ -586,7 +555,7 @@ function updateSpeedStatusDisplay(currentSpeed) {
 }
 
 // Sayfa yüklendikten sonra çalışacak ana fonksiyon
-function init() {
+function init(userData) {
     // 1. Alt menü aktifliğini ayarlama
     document.querySelectorAll('.bottom-menu a').forEach(link => {
         link.classList.remove('active');
@@ -594,21 +563,74 @@ function init() {
     document.getElementById('tabHizAl').classList.add('active');
 
     // 2. Uygulama durumunu yükleme ve mevcut hızı gösterme
-    const appState = getAppState();
-    updateSpeedStatusDisplay(appState.fanSpeed);
+    // Firebase'den gelen veriye göre en yüksek hızı hesaplayın
+    let maxSpeed = 5; // Temel hız
+    if (userData && Array.isArray(userData.purchasedSpeeds) && userData.purchasedSpeeds.length > 0) {
+        maxSpeed = Math.max(maxSpeed, ...userData.purchasedSpeeds);
+    }
+    
+    updateSpeedStatusDisplay(maxSpeed);
     
     document.getElementById('message').innerText = "Hesap bilgileri başarıyla yüklendi. Hemen yükseltin!";
     document.getElementById('message').style.color = "#4cd964";
     showFloatingAlert("Hız paketleri yüklendi ve hazır.", 'success', 2000);
 }
+</script>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
-// document.addEventListener('DOMContentLoaded', () => {
-//     checkFirebaseLogin(); // Sadece Firebase kontrolünü başlat
-// });
+// 🔥🔥🔥 LÜTFEN KENDİ FIREBASE AYARLARINIZLA DEĞİŞTİRİN 🔥🔥🔥
+const firebaseConfig = {
+  apiKey: "AIzaSyBwpgITzHh2K3oYTRDaNbGVexPR8IcqXBU",
+  authDomain: "coinbase-a1aca.firebaseapp.com",
+  projectId: "coinbase-a1aca",
+  storageBucket: "coinbase-a1aca.firebasestorage.app",
+  messagingSenderId: "596259885244",
+  appId: "1:596259885244:web:186df79a6ccdc96f0d00b9",
+  measurementId: "G-Q4SMPE62HF"
+};
 
-// DOMContentLoaded yerine doğrudan çağrılır, Firebase kütüphanesinin yüklenmesini bekler.
-checkFirebaseLogin(); 
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+
+const messageEl = document.getElementById('message');
+
+onAuthStateChanged(auth, async (user) => {
+    if (user && user.emailVerified) {
+        // Oturum açmış kullanıcı
+        await loadUserData(user.uid);
+    } else {
+        // Oturum açmamışsa anında yönlendir
+        messageEl.style.color = '#ff0057';
+        messageEl.innerText = "Oturum açma hatası. Giriş sayfasına yönlendiriliyorsunuz...";
+        // LocalStorage'ı da temizleyelim ki, önceki sayfadaki eski kontrol de tetiklenmesin.
+        localStorage.removeItem('isLoggedIn'); 
+        setTimeout(() => { window.location.href = "index.html"; }, 500);
+    }
+});
+
+async function loadUserData(uid) {
+    const docRef = doc(db, "users", uid);
+    try {
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const userData = docSnap.data();
+            // Sayfa yüklendikten sonra çalışacak olan UI başlatma fonksiyonunu çağır
+            init(userData);
+        } else {
+             messageEl.style.color = '#ff0057';
+             messageEl.innerText = "Kullanıcı verisi bulunamadı. Lütfen tekrar giriş yapın.";
+        }
+    } catch(e) {
+        messageEl.style.color = '#ff0057';
+        messageEl.innerText = `Veri yükleme hatası: ${e.message}`;
+        console.error("Veri Yükleme Hatası:", e);
+    }
+}
 </script>
 </body>
 </html>
