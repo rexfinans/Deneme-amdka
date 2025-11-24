@@ -252,19 +252,33 @@ header i { margin-right: 10px; }
   <a href="cüzdanım.html" id="tabWallet"><i class="fas fa-wallet"></i> Cüzdanım</a>
 </div>
 
-<script>
-// Hiz Al sayfasından kopyalanan yardımcı fonksiyonlar
-function checkLogin() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    if (isLoggedIn !== 'true') {
-        window.location.href = 'index.html'; 
-        return false; 
-    }
-    return true;
-}
-if (!checkLogin()) {
-    throw new Error("Kullanıcı girişi yapılmamış.");
-}
+<script type="module">
+// =========================================================================
+// --- FIREBASE ENTEGRASYONU --- (Yeni Eklendi)
+// =========================================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+// LÜTFEN KENDİ FIREBASE AYARLARINIZLA DEĞİŞTİRİN
+const firebaseConfig = {
+  apiKey: "AIzaSyBwpgITzHh2K3oYTRDaNbGVexPR8IcqXBU",
+  authDomain: "coinbase-a1aca.firebaseapp.com",
+  projectId: "coinbase-a1aca",
+  storageBucket: "coinbase-a1aca.firebasestorage.app",
+  messagingSenderId: "596259885244",
+  appId: "1:596259885244:web:186df79a6ccdc96f0d00b9",
+  measurementId: "G-Q4SMPE62HF"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+
+
+// =========================================================================
+// --- MADENCİLİK İŞLEVİ VE YARDIMCI FONKSİYONLAR ---
+// =========================================================================
+
+// Eski checkLogin() fonksiyonu kaldırıldı. Yerine Firebase kontrolü kullanılacak.
 
 let alertTimeout = null;
 function showFloatingAlert(message, type = 'info', duration = 3000) {
@@ -294,10 +308,6 @@ function getAppState() {
 function saveAppState(state) {
     localStorage.setItem('miningProState', JSON.stringify(state));
 }
-
-// =========================================================================
-// --- MADENCİLİK İŞLEVİ ---
-// =========================================================================
 
 // Hız çarpımına göre MH/s değerini hesapla
 function calculateHashrate(speedMultiplier) {
@@ -413,7 +423,7 @@ function startMiningLoop() {
 }
 
 
-// Başlangıç Fonksiyonu
+// Başlangıç Fonksiyonu (Firebase'den sonra çağrılacak)
 function init() {
     let appState = getAppState();
     
@@ -429,11 +439,12 @@ function init() {
     }
 }
 
-// Sayfa yüklendiğinde başlat
-document.addEventListener('DOMContentLoaded', init);
-</script>
-  // miningpro.html dosyasının en başındaki script bloğuna ekle:
 
+// =========================================================================
+// ✅ GİRİŞ KONTROLÜ VE GERİ YÖNLENDİRME (Döngüyü Engeller)
+// Bu blok, sayfanın yüklenmesini/init fonksiyonunu yalnızca 
+// kullanıcı doğrulanmışsa başlatır.
+// =========================================================================
 onAuthStateChanged(auth, (user) => {
     if (!user || !user.emailVerified) {
         // Kullanıcı giriş yapmamışsa veya e-postası doğrulanmamışsa, giriş sayfasına geri gönder.
@@ -441,12 +452,9 @@ onAuthStateChanged(auth, (user) => {
     } else {
         // Giriş yapıldıysa sayfa yüklemesini başlat
         init(); 
-        startMiningLoop();
     }
 });
-
-// ❗ ÖNEMLİ: Bu kodu ekledikten sonra, bu satırı silin veya yorumlayın:
-// document.addEventListener('DOMContentLoaded', init);
+</script>
   
 </body>
 </html>
