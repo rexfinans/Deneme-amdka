@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MiningPRO - VIP Kontrol</title>
+<title>Genesis Mining Suite - Kontrol Paneli</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -16,7 +16,7 @@ body, html {
   background: #0D1117; 
   color: #E6EDF3; 
   min-height: 100vh;
-  padding-bottom: 70px;
+  padding-bottom: 70px; 
   line-height: 1.6;
 }
 .wrapper {
@@ -30,13 +30,13 @@ header {
   text-align: center;
   font-size: 26px;
   font-weight: 800;
-  color: #F3BA2F; 
-  text-shadow: 0 0 10px rgba(243, 186, 47, 0.6); 
+  color: #00BFFF; 
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.6); 
   box-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid #F3BA2F;
+  border-bottom: 1px solid #00BFFF; 
 }
 header i { margin-right: 10px; }
 
@@ -50,219 +50,157 @@ header i { margin-right: 10px; }
   margin-bottom: 25px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
   border: 1px solid #2D333B;
-  transition: transform 0.3s ease;
+  transition: all 0.5s ease;
 }
 .card h2 {
-    color: #00BFFF; 
+    color: #4cd964; 
     font-size: 22px;
     margin-bottom: 15px;
     border-bottom: 2px solid #2D333B;
     padding-bottom: 10px;
     font-weight: 700;
-}
-
-/* --- KRİPTO VE HIZ SEÇİMİ --- */
-.select-group {
-    margin-bottom: 20px;
-    background: #2D333B;
-    padding: 15px;
-    border-radius: 12px;
-}
-.select-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #A0AEC0;
-}
-.select-group select, .select-group input {
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #555;
-    background: #0D1117;
-    color: #E6EDF3;
-    font-size: 16px;
-    appearance: none; 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-.coin-select-wrapper {
-    display: flex;
-    align-items: center;
-}
-.coin-select-wrapper i {
-    font-size: 24px;
-    margin-right: 10px;
-    color: #F3BA2F;
-    min-width: 25px; 
-}
-
-/* Hız Seçimi (Her bir hız satırı) */
-.speed-option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #161B22;
-}
-.speed-option:last-child {
-    border-bottom: none;
-}
-.speed-details {
-    flex-grow: 1;
-}
-.speed-details span {
-    display: block;
-}
-.speed-name {
-    font-weight: 700;
-    color: #00BFFF;
-}
-.speed-duration {
-    font-size: 12px;
-    color: #999;
-}
-.speed-controls {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-.speed-controls input {
-    width: 130px;
-    padding: 8px;
-    font-size: 14px;
-}
-.speed-controls button {
-    padding: 8px 15px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
+    transition: opacity 0.5s;
     cursor: pointer;
-    transition: background 0.3s;
-    font-size: 14px;
 }
-.btn-activate {
-    background: #4cd964;
-    color: #0D1117;
+
+/* --- AYAR KARTININ KÜÇÜLME STİLİ --- */
+#miningSettingsCard.settings-minimized {
+    padding: 15px 25px;
+    max-height: 60px; 
+    overflow: hidden;
+    opacity: 0.9;
+    border-color: #F3BA2F; 
 }
-.btn-buy {
-    background: #F3BA2F;
-    color: #0D1117;
+#miningSettingsCard.settings-minimized h2 {
+    color: #F3BA2F;
+    border-bottom: none;
+    margin: 0;
+    padding: 0;
 }
-.btn-disabled {
-    background: #555;
-    color: #999;
-    cursor: not-allowed;
+#miningSettingsCard.settings-minimized > div {
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* ========================================================================= */
-/* --- KAZIM ALANI (FAN VE SÜRE) --- */
+/* --- KONTROL KARTI VE İÇERİK STİLLERİ --- */
 /* ========================================================================= */
-.mining-area {
-    text-align: center;
-    margin: 20px 0;
+.mining-area { text-align: center; margin: 20px 0; }
+.mining-status { font-size: 16px; color: #4cd964; font-weight: 600; margin-bottom: 15px; }
+#currentHashrate { 
+    font-size: 48px; font-weight: 800; color: #4cd964; 
+    text-shadow: 0 0 20px rgba(76, 217, 100, 0.8); transition: color 0.5s, text-shadow 0.5s;
 }
-.fan-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto 20px;
-    border: 4px solid #F3BA2F;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 15px rgba(243, 186, 47, 0.8);
+.hashrate-unit { font-size: 20px; font-weight: 400; color: #E6EDF3; margin-left: 5px; }
+
+/* SICAKLIK STİLİ */
+#temperatureDisplay {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 10px 0 15px 0;
+    transition: color 0.3s;
+}
+
+/* Fan Stilleri (Pervane Görünümü) */
+#fanContainer {
+    position: relative; width: 100px; height: 100px; margin: 25px auto;
+    border-radius: 50%; background: #000; border: 5px solid #2D333B;
+    box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.5), 0 0 20px rgba(0, 191, 255, 0.3);
 }
 .fan-blade {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute; width: 100%; height: 100%; top: 0; left: 0;
+    background: radial-gradient(circle, #333 10%, #000 70%);
+    /* Pervane şekli için daha iyi bir clip-path */
+    clip-path: polygon(50% 50%, 65% 15%, 55% 0%, 45% 0%, 35% 15%);
+    opacity: 0.8;
 }
-.fan-blade i {
-    color: #F3BA2F;
-    font-size: 40px;
-    position: absolute;
-}
-/* FAN DÖNME ANİMASYONU */
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-.fan-container.spinning .fan-blade {
-    animation: spin 0.8s linear infinite;
-}
-/* Süre ve Hashrate */
-#miningTimer {
-    font-size: 28px;
-    font-weight: 700;
-    color: #FF0057; 
-}
-.hashrate-info {
-    font-size: 16px;
-    color: #4cd964;
-    font-weight: 600;
-    margin-top: 10px;
-}
-#currentHashrate {
-    font-size: 32px;
-    font-weight: 800;
-    display: block;
-    color: #4cd964;
-}
+/* Üç kanat oluşturuluyor */
+.fan-blade:nth-child(1) { transform: rotate(0deg); }
+.fan-blade:nth-child(2) { transform: rotate(120deg); }
+.fan-blade:nth-child(3) { transform: rotate(240deg); }
 
-/* --- BAŞLAT/DURDUR BUTONU --- */
+#fanContainer::before {
+    content: ''; position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); width: 20px; height: 20px;
+    border-radius: 50%; background: #00BFFF; z-index: 10;
+}
+.fan-spin { animation: spin 0.8s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Sayaç ve Buton Stilleri */
+#countdownTimer { 
+    font-size: 18px; font-weight: 700; color: #F3BA2F; margin-top: 15px; padding: 10px; 
+    border: 1px solid #F3BA2F; border-radius: 8px; display: inline-block; background: #2D333B;
+}
 #toggleMiningBtn {
-    padding: 18px 30px;
-    border: none;
-    border-radius: 50px;
-    font-weight: 800;
-    font-size: 20px;
-    color: #0D1117;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-top: 25px;
-    min-width: 250px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    padding: 18px 30px; border: none; border-radius: 50px; font-weight: 800; font-size: 20px; 
+    color: #0D1117; cursor: pointer; transition: all 0.3s ease; margin-top: 25px; min-width: 250px;
+    display: inline-flex; align-items: center; justify-content: center;
 }
-.mining-off { background: #4CD964; box-shadow: 0 0 20px rgba(76, 217, 100, 0.7); }
-.mining-on { background: #FF0057; box-shadow: 0 0 20px rgba(255, 0, 87, 0.7); }
+.mining-off { background: #4CD964; box-shadow: 0 0 20px rgba(76, 217, 100, 0.7), 0 5px 15px rgba(0,0,0,0.4); }
+.mining-on { background: #FF0057; box-shadow: 0 0 20px rgba(255, 0, 87, 0.7), 0 5px 15px rgba(0,0,0,0.4); }
 
-/* --- BAKIYE KARTI --- */
+/* Bakiye Stilleri */
 .balance-display {
-    text-align: center;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    background: #0D1117;
-    border: 1px solid #00BFFF;
+    text-align: center; padding: 15px; border-radius: 12px; margin-bottom: 20px;
+    background: #0D1117; border: 1px solid #00BFFF; box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.3);
 }
 #miningBalance {
-    font-size: 36px;
-    font-weight: 800;
-    color: #00BFFF;
-    text-shadow: 0 0 15px rgba(0, 191, 255, 0.8);
-}
-#transferBtn {
-    margin-top: 15px;
-    background: #F3BA2F;
-    color: #0D1117;
-    padding: 12px 20px;
-    width: 100%;
-}
-#transferBtn:disabled {
-    background: #2D333B;
-    color: #777;
-    cursor: not-allowed;
+    font-size: 36px; font-weight: 800; color: #00BFFF; text-shadow: 0 0 15px rgba(0, 191, 255, 0.8);
 }
 
-/* Uyarı Sistemi Korundu */
+/* Kripto ve Hız Seçim Stilleri */
+.select-group { margin-bottom: 20px; border: 1px solid #2D333B; padding: 15px; border-radius: 8px; }
+.select-group label { display: block; margin-bottom: 10px; font-weight: 600; color: #CCC; font-size: 16px; }
+.crypto-selection { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+.crypto-item {
+    padding: 10px 15px; border: 2px solid #2D333B; border-radius: 10px; cursor: pointer;
+    transition: all 0.3s; font-weight: 600; display: flex; align-items: center; gap: 8px;
+    background: #0D1117;
+}
+.crypto-item.selected { border-color: #F3BA2F; background: rgba(243, 186, 47, 0.1); color: #F3BA2F; }
+.speed-option {
+    margin-bottom: 15px; padding: 10px; border: 1px solid #2D333B; border-radius: 8px;
+    background: #161B22; display: flex; flex-direction: column; gap: 10px; transition: border-color 0.3s;
+}
+.speed-option.selected { border-color: #00BFFF; background: rgba(0, 191, 255, 0.1); }
+.speed-option-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; cursor: pointer; }
+.speed-multiplier { font-size: 20px; color: #4cd964; }
+.speed-multiplier.paid { color: #F3BA2F; }
+.speed-details { overflow: hidden; max-height: 0; transition: max-height 0.4s ease-out; padding-top: 0; }
+.speed-details.open { max-height: 150px; padding-top: 10px; } /* max-height azaltıldı */
+.speed-details input[type="text"] {
+    padding: 10px; border-radius: 5px; border: 1px solid #363b43; background: #0D1117;
+    color: #E6EDF3; width: calc(100% - 22px); margin-bottom: 10px;
+}
+.speed-details .action-buttons { display: flex; gap: 10px; }
+.speed-details button { padding: 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; flex: 1; transition: background 0.3s; }
+.btn-key { background: #00BFFF; color: #0D1117; }
+.btn-buy { background: #F3BA2F; color: #0D1117; }
+/* Süre Seçenekleri kaldırıldığı için bu stil artık kullanılmayacak */
+/* .duration-selector { display: flex; gap: 10px; margin-top: 10px; margin-bottom: 10px; }
+.duration-item { flex: 1; padding: 8px; border: 1px solid #2D333B; border-radius: 5px; text-align: center; cursor: pointer; font-size: 14px; transition: all 0.3s; }
+.duration-item.selected { border-color: #4cd964; background: rgba(76, 217, 100, 0.1); color: #4cd964; } */
+
+/* Alt menü */
+.bottom-menu { 
+    position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around;
+    background:#161B22; padding:10px 0; box-shadow:0 -5px 15px rgba(0,0,0,0.5); z-index:99;
+    border-top: 1px solid #2D333B;
+}
+.bottom-menu a {
+    flex:1; text-decoration: none; text-align: center; margin:0 5px; padding:8px 0;
+    font-size:12px; background:transparent; color:#777; border-radius:8px; transition:.3s;
+    font-weight: 600; 
+}
+.bottom-menu a i { font-size: 20px; display: block; margin-bottom: 4px; }
+.bottom-menu a.active { 
+    color:#F3BA2F;
+    background: rgba(243, 186, 47, 0.1); 
+    text-shadow: 0 0 5px rgba(243, 186, 47, 0.6);
+}
+
+/* Yüzen Uyarı */
 #floatingAlert {
     position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
     z-index: 10000; padding: 15px 25px; border-radius: 10px; font-weight: 700; color: #121212;
@@ -273,87 +211,219 @@ header i { margin-right: 10px; }
 .alert-success { background: #4cd964; }
 .alert-error { background: #ff0057; }
 .alert-info { background: #00bfff; }
+
+/* Yeni Bilgilendirme Alanı Stilleri */
+.info-section {
+    background: #161B22;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
+    border: 1px solid #2D333B;
+}
+.info-section h3 {
+    color: #00BFFF;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #2D333B;
+    padding-bottom: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.info-section p {
+    font-size: 14px;
+    color: #A0A0A0;
+    margin-bottom: 15px;
+}
+.info-section ul {
+    list-style: none;
+    padding-left: 0;
+}
+.info-section ul li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #2D333B;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+.info-section ul li i {
+    color: #4cd964;
+    margin-right: 10px;
+}
+.info-section ul li:last-child {
+    border-bottom: none;
+}
 </style>
 </head>
 <body>
 
 <div id="floatingAlert" class="alert-info"></div>
-<header><i class="fas fa-hammer"></i> MiningPRO KONTROL PANELİ</header>
+<header><i class="fas fa-microchip"></i> MiningPRO</header>
 <div class="wrapper">
 
-    <div class="card">
-        <h2>🛠️ Kazım Ayarları</h2>
-        
-        <div class="select-group">
-            <label for="coinSelect">Kazım Yapılacak Kripto:</label>
-            <div class="coin-select-wrapper">
-                <i class="fab fa-bitcoin" id="coinIcon"></i>
-                <select id="coinSelect" onchange="window.updateCoinSelection()">
-                    </select>
-            </div>
-        </div>
+    <div class="card" id="miningSettingsCard">
+        <h2 onclick="toggleSettingsCard()">⚙️ Kripto Ve Hız Seçimi</h2>
 
-        <div class="select-group">
-            <label>Yükseltme Hızları ve Aktivasyon:</label>
-            <div id="speedOptionsContainer">
+        <div class="select-group" id="cryptoSelectionGroup">
+            <label>Hedef Varlık Seçimi:</label>
+            <div class="crypto-selection" id="cryptoSelection">
                 </div>
         </div>
-    </div>
 
-    <div class="card">
-        <h2>💰 Kazım Bakiyesi</h2>
-        <div class="balance-display">
-            <div class="label">Şu Ana Kadar Kazdığınız Miktar:</div>
-            <div id="miningBalance">0.000000 <span>USDT</span></div>
-            <div id="speedMultiplier" style="font-size: 16px; margin-top: 8px;">Aktif Hız: 3x</div>
-            <button id="transferBtn" onclick="window.transferMiningBalance()" disabled>
-                <i class="fas fa-exchange-alt"></i> CÜZDANA AKTAR (Manuel)
-            </button>
-            <div id="lastTransferInfo" style="font-size: 12px; color: #A0AEC0; margin-top: 8px;">12 Saatlik döngü kontrol ediliyor...</div>
+        <div class="select-group" id="speedSelectionGroup">
+            <label>Çekirdek İşlemci Hızı (Core Rate):</label>
+            <div id="speedOptions">
+                <div class="speed-option" data-speed="3">
+                    <div class="speed-option-header" onclick="handleSpeedClick(3, event)">
+                        <span class="speed-multiplier">3x (Temel Tahsis)</span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="speed-details">
+                        <p>Standart hash gücü tahsisidir. Ücretsiz ve sınırsız kullanım sunar.</p>
+                    </div>
+                </div>
+
+                <div class="speed-option" data-speed="7">
+                    <div class="speed-option-header" onclick="handleSpeedClick(7, event)">
+                        <span class="speed-multiplier paid">7x (Premium Hash) <i class="fas fa-lock"></i></span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="speed-details">
+                        <p>Performansı önemli ölçüde artırır. Lisans anahtarı veya satın alma gereklidir.</p>
+                        <input type="text" placeholder="Aktivasyon Lisans Anahtarını Girin" id="keyInput7">
+                        <div class="action-buttons">
+                            <button class="btn-key" onclick="activateSpeed(7, document.getElementById('keyInput7').value)">Anahtarı Kullan</button>
+                            <button class="btn-buy" onclick="redirectToBuy()">Satın Al</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speed-option" data-speed="10">
+                    <div class="speed-option-header" onclick="handleSpeedClick(10, event)">
+                        <span class="speed-multiplier paid">10x (Ultra İşlemci) <i class="fas fa-lock"></i></span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="speed-details">
+                        <p>Yüksek hız ve verimlilik sağlar. Lisans anahtarı veya satın alma gereklidir.</p>
+                        <input type="text" placeholder="Aktivasyon Lisans Anahtarını Girin" id="keyInput10">
+                        <div class="action-buttons">
+                            <button class="btn-key" onclick="activateSpeed(10, document.getElementById('keyInput10').value)">Anahtarı Kullan</button>
+                            <button class="btn-buy" onclick="redirectToBuy()">Satın Al</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="speed-option" data-speed="20">
+                    <div class="speed-option-header" onclick="handleSpeedClick(20, event)">
+                        <span class="speed-multiplier paid">20x (Genesis Maksimum) <i class="fas fa-lock"></i></span>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="speed-details">
+                        <p>Maksimum Hashrate Kapasitesi. Lisans anahtarı veya satın alma gereklidir.</p>
+                        <input type="text" placeholder="Aktivasyon Lisans Anahtarını Girin" id="keyInput20">
+                        <div class="action-buttons">
+                            <button class="btn-key" onclick="activateSpeed(20, document.getElementById('keyInput20').value)">Anahtarı Kullan</button>
+                            <button class="btn-buy" onclick="redirectToBuy()">Satın Al</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
+    
     <div class="card">
-        <h2>⚡ Canlı Madencilik Durumu</h2>
+        <h2>📊 MADENCİLİK DURUMU</h2>
         
         <div class="mining-area">
-            <div class="fan-container" id="fanContainer">
-                <div class="fan-blade">
-                    <i class="fas fa-fan"></i>
-                </div>
+            <div id="fanContainer">
+                <div class="fan-blade"></div>
+                <div class="fan-blade"></div>
+                <div class="fan-blade"></div>
             </div>
+
+            <div class="mining-status" id="miningStatusText">Sistem Durumu: Çevrimdışı (Pasif)</div> 
             
-            <div id="miningTimer">00:00:00</div>
-            <div class="hashrate-info">
-                Anlık Hashrate: 
-                <span id="currentHashrate">0.00 MH/s</span>
-            </div>
+            <div id="currentHashrate">0.00 <span class="hashrate-unit">MH/s</span></div>
             
-            <button id="toggleMiningBtn" class="mining-off" onclick="window.toggleMining()">
-                <i class="fas fa-play"></i> LONG KAZIMI BAŞLAT
+            <div id="temperatureDisplay">Sıcaklık: 45°C (Boşta)</div>
+            
+            <div id="countdownTimer">Aktif Oturum Süresi: 12:00:00</div>
+
+            <button id="toggleMiningBtn" class="mining-off" onclick="toggleMining()">
+                <i class="fas fa-play"></i> MADENCİLİĞİ BAŞLAT
             </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>💰 Varlık Bilgisi</h2>
+        <p style="font-size:14px; color:#999; margin-top:-10px; margin-bottom:15px; border-bottom: 1px dashed #2D333B; padding-bottom: 10px;">
+            Hacim Aktarım Protokolü (VAP) ile eş zamanlı toplanan varlık bakiyeniz.
+        </p>
+        <div class="balance-display">
+            <div class="label">Toplanan Varlık Miktarı (<span id="currentCryptoUnit">USDT</span>):</div>
+            <div id="miningBalance">0.000000 <span>USDT</span></div>
+            <div id="speedMultiplier">Aktif İşlemci Hızı: 3x</div>
+        </div>
+        <div class="status-info" id="transferInfo">
+            <i class="fas fa-info-circle"></i> VAP oturumu (12 saat) tamamlandığında, toplanan varlıklar cüzdanınıza otomatik transfer edilir.
+        </div>
+    </div>
+
+    <div class="info-section">
+        <h3><i class="fas fa-shield-alt"></i> Güvenlik Protokolleri ve VAP</h3>
+        <p>
+            **Genesis Mining Suite**, mobil cihazınızın atıl işlem gücünü, optimize edilmiş bir VAP (Hacim Aktarım Protokolü) algoritması aracılığıyla kripto varlık üretimi için kullanır. Sistem, cihazınıza minimum yük bindirerek termal stabiliteyi korur.
+        </p>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> **AES-256 Şifreleme:** Tüm veri ve işlem bilgileri askeri düzeyde şifreleme ile korunur.</li>
+            <li><i class="fas fa-check-circle"></i> **Zero-Knowledge Proof:** Cüzdan adresleri ve transferler izlenemez (Gizlilik Önceliklidir).</li>
+            <li><i class="fas fa-check-circle"></i> **Dinamik Termal Yönetim:** İşlemci sıcaklığı 70°C üzerine çıktığında hız otomatik olarak düşürülür.</li>
+        </ul>
+    </div>
+
+    <div class="info-section">
+        <h3><i class="fas fa-bolt"></i> Premium Hız Yükseltmeleri</h3>
+        <p>
+            Premium Hız Yükseltmeleri (7x, 10x, 20x), tahsis edilen Hashrate kapasitesini maksimize eder. Bu hızları aktive etmek için **Lisans Anahtarı** kullanmanız veya **Satın Alma** yapmanız gerekmektedir.
+        </p>
+        <div style="text-align: center; margin-top: 10px;">
+             <a href="hizal.html" style="color: #F3BA2F; text-decoration: none; font-weight: 700;">
+                <i class="fas fa-external-link-alt"></i> Hız Satın Alma Terminaline Git
+            </a>
         </div>
     </div>
     
 </div>
 
 <div class="bottom-menu">
-  <a href="miningpro.html" id="tabMining" class="active"><i class="fas fa-tachometer-alt"></i> Kazım</a>
-  <a href="hizal.html" id="tabHizAl"><i class="fas fa-bolt"></i> Hız Al</a>
-  <a href="kazan.html" id="tabKazan"><i class="fas fa-trophy"></i> Kazan</a>
-  <a href="cüzdanım.html" id="tabWallet"><i class="fas fa-wallet"></i> Cüzdanım</a>
+  <a href="miningpro.html" id="tabMining" class="active"><i class="fas fa-tachometer-alt"></i> Madencilik</a>
+  <a href="hizal.html" id="tabHizAl"><i class="fas fa-bolt"></i> Hız Yükselt</a>
+  <a href="kazan.html" id="tabKazan"><i class="fas fa-trophy"></i> Ödül Havuzu</a>
+  <a href="cüzdanım.html" id="tabWallet"><i class="fas fa-wallet"></i> Cüzdan</a>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
-
-<script>
+<div class="wrapper" style="margin-top: 0; padding-top: 0;">
+    <div style="text-align: center; color: #555; font-size: 11px; padding: 20px 0;">
+        &copy; 2025 Genesis Mining Technologies. Tüm hakları saklıdır.
+        <br><br>
+        <a href="#" style="color: #00BFFF; text-decoration: none; margin: 0 5px;">Gizlilik Politikası</a> | 
+        <a href="#" style="color: #00BFFF; text-decoration: none; margin: 0 5px;">Hizmet Şartları</a> | 
+        <a href="#" style="color: #00BFFF; text-decoration: none; margin: 0 5px;">Sponsorlar</a>
+    </div>
+</div>
+<script type="module">
 // =========================================================================
-// --- FIREBASE ENTEGRASYONU VE GLOBAL DEĞİŞKENLER --- 
+// --- FIREBASE ENTEGRASYONU (Ayarlarınızı Buraya Girin) ---
 // =========================================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 
-// LÜTFEN KENDİ FIREBASE AYARLARINIZLA DEĞİŞTİRİN
+// ⚠️ LÜTFEN KENDİ FIREBASE AYARLARINIZLA DEĞİŞTİRİN
 const firebaseConfig = {
   apiKey: "AIzaSyBwpgITzHh2K3oYTRDaNbGVexPR8IcqXBU",
   authDomain: "coinbase-a1aca.firebaseapp.com",
@@ -364,69 +434,36 @@ const firebaseConfig = {
   measurementId: "G-Q4SMPE62HF"
 };
 
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const docRef = firebase.firestore.doc;
-const getDoc = firebase.firestore.getDoc;
-const setDoc = firebase.firestore.setDoc;
-const updateDoc = firebase.firestore.updateDoc;
-const onAuthStateChanged = firebase.auth.onAuthStateChanged;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getDatabase(app);
 
-let currentUserID = null;
-let miningInterval; // Madencilik döngüsü
-let timerInterval;  // Süre sayacı döngüsü
-const TWELVE_HOURS = 12 * 60 * 60 * 1000; // 12 saat milisaniye
 
 // =========================================================================
-// --- YAPILANDIRMA VE SABİT DEĞERLER ---
+// --- KRİPTO VE HIZ AYARLARI ---
 // =========================================================================
-
-// ADMIN PANELİNDEN GELEN AKTİVASYON KEYLERİ (Her key belirli bir hızı açar)
-const ACTIVATION_KEYS = {
-    "KEY-07X-10D": { speed: 7, duration: 10 * 24 * 60 * 60 * 1000 },
-    "KEY-10X-20D": { speed: 10, duration: 20 * 24 * 60 * 60 * 1000 },
-    "KEY-20X-30D": { speed: 20, duration: 30 * 24 * 60 * 60 * 1000 }
-};
-
-// Hız Seviyeleri Tanımları (Unutmayın: 3x her zaman ücretsiz açıktır)
-const SPEED_LEVELS = [
-    { speed: 3, label: "3x (Temel)", durationDays: "Süresiz" },
-    { speed: 7, label: "7x (10 Günlük)", durationDays: "10 Gün" },
-    { speed: 10, label: "10x (20 Günlük)", durationDays: "20 Gün" },
-    { speed: 20, label: "20x (30 Günlük)", durationDays: "30 Gün" }
+const CRYPTOS = [
+    { id: 'usdt', name: 'USDT', icon: 'fas fa-dollar-sign', dailyRate: 1.00 },
+    { id: 'btc', name: 'Bitcoin', icon: 'fab fa-bitcoin', dailyRate: 0.000018 },
+    { id: 'eth', name: 'Ethereum', icon: 'fab fa-ethereum', dailyRate: 0.0003 },
+    { id: 'sol', name: 'Solana', icon: 'fab fa-solana', dailyRate: 0.008 },
+    { id: 'bnb', name: 'BNB', icon: 'fas fa-coins', dailyRate: 0.004 },
+    { id: 'xrp', name: 'XRP', icon: 'fas fa-handshake', dailyRate: 2.5 },
+    { id: 'ada', name: 'Cardano', icon: 'fas fa-tag', dailyRate: 3.0 },
+    { id: 'doge', name: 'Dogecoin', icon: 'fas fa-paw', dailyRate: 15.0 },
+    { id: 'matic', name: 'Polygon', icon: 'fas fa-gem', dailyRate: 1.2 },
+    { id: 'dot', name: 'Polkadot', icon: 'fas fa-bullseye', dailyRate: 0.15 },
+    { id: 'ltc', name: 'Litecoin', icon: 'fas fa-lira-sign', dailyRate: 0.015 },
+    { id: 'trx', name: 'Tron', icon: 'fas fa-cubes', dailyRate: 10.0 },
 ];
 
-// Kripto Para Listesi (12 Adet)
-const CRYPTO_COINS = [
-    { code: 'USDT', name: 'USDT (Tether)', icon: 'fas fa-dollar-sign' },
-    { code: 'BTC', name: 'BTC (Bitcoin)', icon: 'fab fa-bitcoin' },
-    { code: 'ETH', name: 'ETH (Ethereum)', icon: 'fab fa-ethereum' },
-    { code: 'BNB', name: 'BNB (Binance)', icon: 'fas fa-hand-holding-usd' },
-    { code: 'XRP', name: 'XRP (Ripple)', icon: 'fas fa-x-ray' },
-    { code: 'ADA', name: 'ADA (Cardano)', icon: 'fab fa-adn' },
-    { code: 'DOGE', name: 'DOGE (Dogecoin)', icon: 'fas fa-dog' },
-    { code: 'SOL', name: 'SOL (Solana)', icon: 'fas fa-sun' },
-    { code: 'DOT', name: 'DOT (Polkadot)', icon: 'fas fa-dot-circle' },
-    { code: 'TRX', name: 'TRX (Tron)', icon: 'fas fa-bolt' },
-    { code: 'LTC', name: 'LTC (Litecoin)', icon: 'fab fa-gripfire' },
-    { code: 'SHIB', name: 'SHIB (Shiba)', icon: 'fas fa-paw' },
-];
-
-// Günlük Kazanç Oranları (USDT cinsinden, 3x için ortalama 0.75 USD)
-function getDailyRate(speed) {
-    return 0.75 + (speed - 3) * 0.20;
-}
-function calculateHashrate(speedMultiplier) {
-    const BASE_HASHRATE = 0.12; 
-    const RATE_PER_MULTIPLIER = 0.04; 
-    return (BASE_HASHRATE + (speedMultiplier - 3) * RATE_PER_MULTIPLIER).toFixed(2);
-}
+let miningInterval;
+let countdownInterval;
+let userID = null;
 
 // =========================================================================
-// --- UI GÜNCELLEME VE YARDIMCI FONKSİYONLAR ---
+// --- YARDIMCI FONKSİYONLAR VE LOKAL DEPOLAMA ---
 // =========================================================================
-// (Alert ve İkon fonksiyonları önceki gibi)
 
 let alertTimeout = null;
 function showFloatingAlert(message, type = 'info', duration = 3000) {
@@ -442,422 +479,517 @@ function showFloatingAlert(message, type = 'info', duration = 3000) {
     }, duration);
 }
 
-function updateCoinIcon(coinCode) {
-    const coin = CRYPTO_COINS.find(c => c.code === coinCode) || CRYPTO_COINS[0];
-    document.getElementById('coinIcon').className = coin.icon;
-}
+function getAppState() {
+    const defaultState = {
+        isMining: false,
+        miningBalance: 0.0,
+        fanSpeed: 3, 
+        selectedCrypto: 'usdt',
+        lastUpdateTime: Date.now(),
+        miningEndTime: 0,
+        purchasedSpeeds: {
+            // Süre seçenekleri kaldırıldığı için bu objenin yapısı basitleştirilebilir. 
+            // Şimdilik sadece anahtarın varlığı/yokluğu kontrol edilebilir.
+            // Örn: { 7: true, 10: false }
+        }, 
+        // Eski duration-based mantık kaldırıldığı için expiration kontrolü gerekmez, 
+        // ancak eski verilerin bozulmaması için geçici olarak tutulabilir.
+    };
+    
+    const state = localStorage.getItem(`miningProState_${userID}`);
+    const loadedState = state ? JSON.parse(state) : defaultState;
 
-// Kripto Para Dropdown'unu Doldurma
-function populateCoinDropdown(selectedCoin) {
-    const dropdown = document.getElementById('coinSelect');
-    dropdown.innerHTML = '';
-    CRYPTO_COINS.forEach(coin => {
-        const option = document.createElement('option');
-        option.value = coin.code;
-        option.innerText = coin.name;
-        dropdown.appendChild(option);
-    });
-    dropdown.value = selectedCoin;
-    updateCoinIcon(selectedCoin);
-}
-
-// Hız Seçimi ve Aktivasyon Alanını Doldurma
-function populateSpeedOptions(appState) {
-    const container = document.getElementById('speedOptionsContainer');
-    container.innerHTML = '';
-
-    const unlockedSpeeds = appState.unlockedSpeeds || {};
-
-    SPEED_LEVELS.forEach(level => {
-        const speed = level.speed;
-        let isActivated = false;
-        let remainingDays = 'Süresiz';
-
-        if (speed === 3) {
-            isActivated = true; // 3x her zaman açıktır
-        } else if (unlockedSpeeds[speed]) {
-            const expiryTime = unlockedSpeeds[speed];
-            const remainingMs = expiryTime - Date.now();
-
-            if (remainingMs > 0) {
-                isActivated = true;
-                remainingDays = Math.ceil(remainingMs / (1000 * 60 * 60 * 24)) + " Gün Kaldı";
-            } else {
-                // Süre dolduysa, sadece kayıttan silinmez, ama artık kullanılamaz.
-                isActivated = false;
-            }
+    if (loadedState.isMining) {
+        if (loadedState.miningEndTime > 0 && loadedState.miningEndTime < Date.now()) {
+            loadedState.isMining = false;
+            loadedState.miningEndTime = 0;
+            loadedState.miningBalance = 0.0; 
+            showFloatingAlert('VAP Oturumu dolmuş. Lütfen tekrar başlatın.', 'info', 5000);
         }
-        
-        const isCurrentSpeed = appState.fanSpeed === speed;
-
-        const optionDiv = document.createElement('div');
-        optionDiv.classList.add('speed-option');
-        
-        const details = `
-            <div class="speed-details">
-                <span class="speed-name" style="color: ${isCurrentSpeed ? '#4cd964' : '#00BFFF'};">
-                    ${level.label} ${isCurrentSpeed ? ' (AKTİF)' : ''}
-                </span>
-                <span class="speed-duration" style="color: ${isActivated ? '#4cd964' : '#FF0057'};">
-                    ${isActivated ? remainingDays : 'Kilitli'}
-                </span>
-            </div>
-            <div class="speed-controls">
-                ${speed === 3 ? `
-                    <button class="${isCurrentSpeed ? 'btn-activate' : 'btn-disabled'}" onclick="window.handleSpeedChange(${speed})" ${isCurrentSpeed ? 'disabled' : ''}>
-                        SEÇ
-                    </button>
-                ` : isActivated ? `
-                    <button class="${isCurrentSpeed ? 'btn-activate' : 'btn-buy'}" onclick="window.handleSpeedChange(${speed})" ${isCurrentSpeed ? 'disabled' : ''}>
-                        SEÇ
-                    </button>
-                ` : `
-                    <input type="text" id="keyInput-${speed}" placeholder="Key Girişi" maxlength="15">
-                    <button class="btn-activate" onclick="window.activateSpeed(${speed})">
-                        Key Aktif
-                    </button>
-                    <button class="btn-buy" onclick="window.buySpeed(${speed})">
-                        Satın Al
-                    </button>
-                `}
-            </div>
-        `;
-        optionDiv.innerHTML = details;
-        container.appendChild(optionDiv);
-    });
-}
-
-
-// UI'ı mevcut duruma göre güncelleyen ana fonksiyon
-function updateUI(appState) {
-    if (!appState) return;
-    
-    // Hız ve Bakiye Bilgileri
-    document.getElementById('miningBalance').innerHTML = `${appState.miningBalance.toFixed(6)} <span>${appState.selectedCoin}</span>`;
-    document.getElementById('speedMultiplier').innerText = `Aktif Hız: ${appState.fanSpeed}x`;
-    document.getElementById('currentHashrate').innerText = `${calculateHashrate(appState.fanSpeed)} MH/s`;
-    
-    // Fan ve Buton Durumu
-    const btn = document.getElementById('toggleMiningBtn');
-    const fan = document.getElementById('fanContainer');
-
-    if (appState.isMining) {
-        btn.classList.remove('mining-off');
-        btn.classList.add('mining-on');
-        btn.innerHTML = '<i class="fas fa-pause"></i> KAZIMI DURDUR';
-        fan.classList.add('spinning');
-        document.getElementById('miningTimer').style.color = '#4cd964';
     } else {
-        btn.classList.remove('mining-on');
-        btn.classList.add('mining-off');
-        btn.innerHTML = '<i class="fas fa-play"></i> LONG KAZIMI BAŞLAT';
-        fan.classList.remove('spinning');
-        document.getElementById('miningTimer').style.color = '#FF0057';
+        loadedState.lastUpdateTime = Date.now();
     }
-
-    // Transfer Butonu Durumu
-    document.getElementById('transferBtn').disabled = appState.miningBalance < 0.000001 || appState.isMining;
     
-    // Hız alanını güncelleyerek kilit/seçili durumu yansıt
-    populateSpeedOptions(appState); 
+    // Fan hızı kontrolü: Eğer lisansı olmayan bir hızda kaldıysa 3x'e çek
+    if (loadedState.fanSpeed !== 3 && !loadedState.purchasedSpeeds[loadedState.fanSpeed]) {
+        loadedState.fanSpeed = 3;
+    }
+    
+    return loadedState;
 }
 
-// Süre Sayacı
-function startTimer(startTimeMs, isMining) {
-    clearInterval(timerInterval);
-    const timerEl = document.getElementById('miningTimer');
-    const infoEl = document.getElementById('lastTransferInfo');
+function saveAppState(state) {
+    localStorage.setItem(`miningProState_${userID}`, JSON.stringify(state));
+    if (userID) {
+         set(ref(db, 'users/' + userID + '/miningData'), {
+            fanSpeed: state.fanSpeed,
+            selectedCrypto: state.selectedCrypto,
+            purchasedSpeeds: state.purchasedSpeeds,
+        }).catch(error => {
+            console.error("Firebase'e kaydetme hatası:", error);
+        });
+    }
+}
 
-    if (!isMining) {
-        timerEl.innerText = "00:00:00";
-        infoEl.innerText = "Madencilik başlamadı. Başlat düğmesine basın.";
+function calculateHashrate(speedMultiplier) {
+    const BASE_HASHRATE = 0.15; 
+    const RATE_PER_MULTIPLIER = 0.03; 
+    return (BASE_HASHRATE + (speedMultiplier - 3) * RATE_PER_MULTIPLIER).toFixed(3);
+}
+
+function updateMiningBalance(appState) {
+    const now = Date.now();
+    const timeElapsedHours = (now - appState.lastUpdateTime) / (1000 * 60 * 60);
+
+    if (appState.isMining && timeElapsedHours > 0) {
+        const crypto = CRYPTOS.find(c => c.id === appState.selectedCrypto);
+        if (!crypto) return;
+
+        const dailyRate = crypto.dailyRate * (appState.fanSpeed / 3); 
+        const earnings = dailyRate * timeElapsedHours / 24;
+        
+        appState.miningBalance += earnings;
+        appState.lastUpdateTime = now; 
+        saveAppState(appState);
+    }
+}
+
+// =========================================================================
+// --- KART KONTROL FONKSİYONLARI ---
+// =========================================================================
+
+function toggleSettingsCardVisibility(minimize) {
+    const settingsCard = document.getElementById('miningSettingsCard');
+    if (!settingsCard) return;
+
+    if (minimize) {
+        settingsCard.classList.add('settings-minimized');
+    } else {
+        settingsCard.classList.remove('settings-minimized');
+    }
+}
+
+window.toggleSettingsCard = function() {
+    const settingsCard = document.getElementById('miningSettingsCard');
+    if (!settingsCard) return;
+    
+    if (getAppState().isMining) {
+        showFloatingAlert('Algoritma aktifken parametreleri değiştiremezsiniz. Önce durdurun.', 'error');
         return;
     }
 
-    timerInterval = setInterval(() => {
-        const elapsedTimeMs = Date.now() - startTimeMs;
-        const remainingTimeMs = TWELVE_HOURS - (elapsedTimeMs % TWELVE_HOURS); 
+    if (settingsCard.classList.contains('settings-minimized')) {
+        toggleSettingsCardVisibility(false);
+        toggleSpeedDetails(getAppState().fanSpeed, true);
+    }
+}
 
-        const totalHours = Math.floor(remainingTimeMs / (1000 * 60 * 60));
-        const totalMinutes = Math.floor((remainingTimeMs % (1000 * 60 * 60)) / (1000 * 60));
-        const totalSeconds = Math.floor((remainingTimeMs % (1000 * 60)) / 1000);
+function toggleSpeedDetails(speed, forceOpen = false) {
+    const option = document.querySelector(`.speed-option[data-speed="${speed}"]`);
+    if (!option) return;
 
-        const hours = String(totalHours).padStart(2, '0');
-        const minutes = String(totalMinutes).padStart(2, '0');
-        const seconds = String(totalSeconds).padStart(2, '0');
+    const details = option.querySelector('.speed-details');
+    const chevron = option.querySelector('.speed-option-header i');
 
-        timerEl.innerText = `${hours}:${minutes}:${seconds}`;
-        infoEl.innerText = `Kalan Süre: ${hours} saat ${minutes} dakika`;
+    document.querySelectorAll('.speed-option').forEach(opt => {
+        const det = opt.querySelector('.speed-details');
+        const chev = opt.querySelector('.speed-option-header i');
+        if (opt !== option && det.classList.contains('open')) {
+            det.classList.remove('open');
+            if (chev) chev.classList.replace('fa-chevron-down', 'fa-chevron-right');
+        }
+    });
 
-        // 12 saatlik döngü biterse
-        if (remainingTimeMs < 1000 && remainingTimeMs > -1000) {
-            // Döngü otomatik olarak madencilik akışını tetikler ve transferi yapar.
-            timerEl.innerText = "TRANSFER OTO YAPILIYOR..."; 
+    if (forceOpen || !details.classList.contains('open')) {
+        details.classList.add('open');
+        if (chevron) chevron.classList.replace('fa-chevron-right', 'fa-chevron-down');
+    } else {
+        details.classList.remove('open');
+        if (chevron) chevron.classList.replace('fa-chevron-down', 'fa-chevron-right');
+    }
+}
+
+
+window.handleSpeedClick = function(speed, event) {
+    const appState = getAppState();
+
+    if (event && (event.target.closest('.action-buttons') || event.target.closest('.duration-selector'))) {
+        return; 
+    }
+    
+    if (appState.isMining) {
+         showFloatingAlert('Algoritma aktifken hızı değiştiremezsiniz.', 'error');
+         return;
+    }
+    
+    // Eğer seçilen hız 3x'ten büyükse ve satın alınmamışsa (lisanssızsa), hız değişikliğini engelle
+    if (speed > 3 && !appState.purchasedSpeeds[speed]) {
+        // Sadece 3x ise direk seç
+        if (speed === 3) {
+            appState.fanSpeed = speed;
+            saveAppState(appState);
+            updateUI(appState);
+            showFloatingAlert(`Temel Core Rate ${speed}x olarak seçildi.`, 'success');
+            toggleSettingsCardVisibility(true);
+            return;
+        }
+        
+        // Lisanssız hızı sadece açılır pencereyi göstermek için ayarla, asıl hızı 3x'te tut.
+        // Aslında appState.fanSpeed'i değiştirmemek daha mantıklı, sadece UI'ı güncellemek için toggleDetails kullan.
+        toggleSpeedDetails(speed);
+        return;
+    }
+    
+    // Lisanslı veya 3x ise hızı değiştir
+    appState.fanSpeed = speed; 
+    saveAppState(appState);
+    updateUI(appState);
+    
+    toggleSpeedDetails(speed);
+    toggleSettingsCardVisibility(true); // Hız seçildiğinde kartı küçült
+}
+
+
+function selectCrypto(cryptoId) {
+    let appState = getAppState();
+    
+    if (appState.isMining) {
+        showFloatingAlert('Algoritma aktifken hedef varlık değiştiremezsiniz.', 'error');
+        return;
+    }
+    
+    if (appState.selectedCrypto === cryptoId && !document.getElementById('miningSettingsCard').classList.contains('settings-minimized')) {
+        return;
+    }
+    
+    appState.selectedCrypto = cryptoId;
+    saveAppState(appState);
+    updateUI(appState);
+    showFloatingAlert(`${cryptoId.toUpperCase()} hedef varlık olarak atandı.`, 'info');
+    
+    toggleSettingsCardVisibility(true);
+}
+
+function setupCryptoSelection() {
+    const container = document.getElementById('cryptoSelection');
+    container.innerHTML = '';
+    CRYPTOS.forEach(crypto => {
+        const item = document.createElement('div');
+        item.className = `crypto-item ${crypto.id === getAppState().selectedCrypto ? 'selected' : ''}`;
+        item.dataset.crypto = crypto.id;
+        item.innerHTML = `<i class="${crypto.icon}"></i> ${crypto.name}`;
+        item.addEventListener('click', () => selectCrypto(crypto.id));
+        container.appendChild(item);
+    });
+}
+
+// Süre opsiyonları kaldırıldığı için bu fonksiyon basitleştirildi.
+window.activateSpeed = function(speed, key) {
+    let appState = getAppState();
+
+    if (key.length < 8) {
+        showFloatingAlert('Geçersiz lisans anahtarı uzunluğu!', 'error');
+        return;
+    }
+    if (appState.isMining) {
+        showFloatingAlert('Algoritma aktifken lisans kullanamazsınız.', 'error');
+        return;
+    }
+    
+    // Anahtar geçerli kabul edildi (Simülasyon amaçlı)
+    appState.purchasedSpeeds[speed] = true;
+    appState.fanSpeed = speed;
+    saveAppState(appState);
+    updateUI(appState);
+    
+    showFloatingAlert(`${speed}x İşlemci Hızı aktive edildi!`, 'success');
+    
+    toggleSettingsCardVisibility(true);
+}
+
+// Tüm Satın Al butonları hizal.html'ye yönlendirir.
+window.redirectToBuy = function() {
+    window.location.href = 'hizal.html';
+}
+
+// Kazım Başlatma/Durdurma (PROFESYONEL İFADE)
+window.toggleMining = function() {
+    let appState = getAppState();
+    
+    appState.isMining = !appState.isMining;
+    appState.lastUpdateTime = Date.now(); 
+
+    if (appState.isMining) {
+        appState.miningEndTime = Date.now() + 12 * 60 * 60 * 1000;
+        showFloatingAlert(`HASH Algoritması ${appState.fanSpeed}x hız ile başlatıldı. İşlemci durumu: Optimal.`, 'success');
+        startMiningLoop();
+        startCountdown();
+        toggleSettingsCardVisibility(true); 
+    } else {
+        appState.miningEndTime = 0;
+        showFloatingAlert('Sistem Pasif Edildi. Hacim Aktarım Protokolü Durduruldu.', 'error');
+        clearInterval(miningInterval);
+        clearInterval(countdownInterval);
+        document.getElementById('fanContainer').classList.remove('fan-spin');
+        toggleSettingsCardVisibility(false); 
+    }
+    
+    saveAppState(appState);
+    updateUI(appState);
+}
+
+// Süre kontrolü kaldırıldı, sadece lisans var mı yok mu kontrolü yapılabilir.
+function checkSpeedExpiry(appState) {
+    // Şimdilik sadece aktif hızın lisanslı olup olmadığını kontrol et.
+    if (appState.fanSpeed > 3 && !appState.purchasedSpeeds[appState.fanSpeed]) {
+        appState.fanSpeed = 3;
+        saveAppState(appState);
+        showFloatingAlert(`Aktif hız lisansı bulunamadı. Temel tahsise (3x) dönüldü.`, 'error');
+    }
+}
+
+// Sayaç Güncelleme (PROFESYONEL İFADE)
+function updateCountdown(appState) {
+    const timerDisplay = document.getElementById('countdownTimer');
+    const now = Date.now();
+    const remainingTime = appState.miningEndTime - now;
+
+    if (remainingTime <= 0) {
+        clearInterval(countdownInterval);
+        clearInterval(miningInterval);
+        
+        const balance = appState.miningBalance.toFixed(6);
+        const cryptoUnit = appState.selectedCrypto.toUpperCase();
+
+        appState.miningBalance = 0.0;
+        appState.isMining = false;
+        appState.miningEndTime = 0;
+        saveAppState(appState);
+        updateUI(appState);
+        
+        document.getElementById('fanContainer').classList.remove('fan-spin');
+        timerDisplay.innerText = 'Aktif Oturum Süresi: 12:00:00';
+        showFloatingAlert(`VAP Oturumu Sonlandı! ${balance} ${cryptoUnit} envantere transfer edildi.`, 'success', 8000);
+        toggleSettingsCardVisibility(false); 
+        return;
+    }
+
+    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+    timerDisplay.innerText = `Aktif Oturum Süresi: ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+function startCountdown() {
+    clearInterval(countdownInterval);
+    countdownInterval = setInterval(() => {
+        let appState = getAppState();
+        if (appState.isMining) {
+            updateCountdown(appState);
+        } else {
+            clearInterval(countdownInterval);
         }
     }, 1000);
 }
 
 
-// =========================================================================
-// --- FIREBASE VERİ İŞLEMLERİ ---
-// =========================================================================
+// UI Güncelleme (PROFESYONEL İFADE)
+function updateUI(appState) {
+    const btn = document.getElementById('toggleMiningBtn');
+    const statusText = document.getElementById('miningStatusText');
+    const hashrateDisplay = document.getElementById('currentHashrate');
+    const balanceDisplay = document.getElementById('miningBalance');
+    const speedDisplay = document.getElementById('speedMultiplier');
+    const currentCryptoUnit = document.getElementById('currentCryptoUnit');
+    const fanContainer = document.getElementById('fanContainer');
+    const countdownTimer = document.getElementById('countdownTimer');
+    const temperatureDisplay = document.getElementById('temperatureDisplay');
+    
+    const crypto = CRYPTOS.find(c => c.id === appState.selectedCrypto) || CRYPTOS[0];
 
-async function getAppState() {
-    if (!currentUserID) return null;
-
-    try {
-        const userDocRef = docRef(db, "users", currentUserID);
-        const docSnap = await getDoc(userDocRef);
-
-        const defaultState = {
-            isMining: false, miningBalance: 0.0, fanSpeed: 3, 
-            selectedCoin: 'USDT', miningStartTime: 0, 
-            mainBalance: { USDT: 0.0 }, // Başlangıçta sadece USDT
-            unlockedSpeeds: { 3: 9999999999999 }, // 3x süresiz açık (unix timestamp çok büyük)
-        };
-
-        if (docSnap.exists()) {
-            let appState = { ...defaultState, ...docSnap.data() };
-            
-            // Hız süreleri dolanları kontrol et
-            if (appState.unlockedSpeeds) {
-                Object.keys(appState.unlockedSpeeds).forEach(speed => {
-                    const expiry = appState.unlockedSpeeds[speed];
-                    if (expiry < Date.now()) {
-                        delete appState.unlockedSpeeds[speed];
-                        if (appState.fanSpeed === parseInt(speed)) {
-                            appState.fanSpeed = 3; // Süre dolduysa 3x'e düşür
-                        }
-                    }
-                });
-            }
-
-            // Eğer fanSpeed artık kilitliyse 3x'e geri dön
-            if (!appState.unlockedSpeeds || !appState.unlockedSpeeds[appState.fanSpeed]) {
-                appState.fanSpeed = 3;
-            }
-
-            return appState;
+    balanceDisplay.innerHTML = `${appState.miningBalance.toFixed(6)} <span>${crypto.name}</span>`;
+    speedDisplay.innerText = `Aktif İşlemci Hızı: ${appState.fanSpeed}x`;
+    currentCryptoUnit.innerText = crypto.name;
+    
+    // Kripto ve Hız Seçimlerini Güncelle
+    document.querySelectorAll('.crypto-item').forEach(el => {
+        if (el.dataset.crypto === appState.selectedCrypto) {
+            el.classList.add('selected');
         } else {
-            await setDoc(userDocRef, defaultState);
-            return defaultState;
+            el.classList.remove('selected');
         }
-    } catch (e) {
-        console.error("Firestore'dan veri çekme hatası:", e);
-        showFloatingAlert("Veri hatası: Sunucu bağlantı sorunu.", 'error');
-        return null;
-    }
-}
-
-// Bakiye ve Madencilik Simülasyonu
-function updateMiningBalanceAndCheckTransfer(appState) {
-    const now = Date.now();
-    const elapsedTimeMs = now - appState.lastUpdateTime;
-    const timeElapsedHours = elapsedTimeMs / (1000 * 60 * 60); 
-    let updates = {};
-    
-    // 1. Kazım Simülasyonu
-    if (appState.isMining && timeElapsedHours > 0) {
-        const dailyRate = getDailyRate(appState.fanSpeed); 
-        const earnings = dailyRate * timeElapsedHours / 24;
-        const randomness = (Math.random() * 0.4) + 0.8; 
-        const finalEarnings = earnings * randomness;
-
-        appState.miningBalance = parseFloat((appState.miningBalance + finalEarnings).toFixed(6));
-        appState.lastUpdateTime = now; 
-        updates.miningBalance = appState.miningBalance;
-        updates.lastUpdateTime = appState.lastUpdateTime;
-    }
-    
-    // 2. Otomatik Transfer Kontrolü (12 saatlik döngü kontrolü)
-    if (appState.isMining && (now - appState.miningStartTime) >= TWELVE_HOURS) {
-        appState = performTransfer(appState, true);
-        
-        // Yeni döngüyü başlat
-        appState.miningStartTime = now; 
-        
-        updates.miningBalance = appState.miningBalance;
-        updates.miningStartTime = appState.miningStartTime;
-        updates.mainBalance = appState.mainBalance; 
-
-        // Transferi takiben timer'ı sıfırla
-        startTimer(appState.miningStartTime, true); 
-    }
-    
-    if (Object.keys(updates).length > 0) {
-       saveAppState(updates); 
-    }
-    
-    return appState;
-}
-
-
-// =========================================================================
-// --- KULLANICI ETKİLEŞİMİ (WINDOW FUNCTIONS) ---
-// =========================================================================
-
-// Hızı Key ile Aktifleştirme
-window.activateSpeed = async function(speed) {
-    const keyInput = document.getElementById(`keyInput-${speed}`).value.trim().toUpperCase();
-    const keyData = Object.entries(ACTIVATION_KEYS).find(([key, data]) => data.speed === speed && key === keyInput);
-
-    if (!keyData) {
-        showFloatingAlert("Yanlış Key! Lütfen anahtarınızı kontrol edin.", 'error');
-        return;
-    }
-    
-    const [key, data] = keyData;
-    let appState = await getAppState();
-    
-    const expiryTime = Date.now() + data.duration;
-
-    // Hızı aç
-    appState.unlockedSpeeds[speed] = expiryTime;
-    
-    // Otomatik olarak yeni hızı seç
-    appState.fanSpeed = speed;
-    
-    await saveAppState({ 
-        unlockedSpeeds: appState.unlockedSpeeds, 
-        fanSpeed: appState.fanSpeed 
     });
     
-    // UI'ı güncelleyip kullanıcıyı bilgilendir
-    populateSpeedOptions(appState);
-    updateUI(appState); 
-    showFloatingAlert(`🚀 Başarılı! ${speed}x Hız ${data.duration / (1000 * 60 * 60 * 24)} Günlüğüne Aktif Edildi.`, 'success', 6000);
-}
+    document.querySelectorAll('.speed-option').forEach(el => {
+        const speed = parseInt(el.dataset.speed);
+        
+        // Lisanslı olmayan hızlarda kilidi tekrar göster
+        const lockIcon = el.querySelector('.speed-multiplier i.fa-lock');
+        if (speed > 3 && !appState.purchasedSpeeds[speed]) {
+            if (lockIcon) lockIcon.style.display = 'inline';
+        } else {
+            if (lockIcon) lockIcon.style.display = 'none';
+        }
+        
+        // Seçili hızı vurgula
+        if (speed === appState.fanSpeed) {
+            el.classList.add('selected');
+        } else {
+            el.classList.remove('selected');
+        }
+    });
 
-// Hızı Satın Alma (Yönlendirme)
-window.buySpeed = function(speed) {
-    showFloatingAlert(`Ödeme sayfasına yönlendiriliyorsunuz...`, 'info');
-    // Gerçekte ödeme butonuna basınca gideceği sayfa
-    window.location.href = `odeme.html?speed=${speed}`; 
-}
+    // Buton ve Durum Güncelleme
+    if (appState.isMining) {
+        btn.classList.remove('mining-off');
+        btn.classList.add('mining-on');
+        btn.innerHTML = '<i class="fas fa-power-off"></i> DURDUR';
+        statusText.style.color = '#4cd964';
+        statusText.innerText = `Sistem Durumu: Çekirdekler ${appState.fanSpeed}x Hızda (Aktif)`;
+        
+        const currentHashrate = calculateHashrate(appState.fanSpeed);
+        hashrateDisplay.innerHTML = `${currentHashrate} <span class="hashrate-unit">MH/s</span>`;
+        hashrateDisplay.style.color = '#4cd964';
+        hashrateDisplay.style.textShadow = '0 0 20px rgba(76, 217, 100, 0.8)';
+        fanContainer.classList.add('fan-spin');
+        
+        // Dinamik Sıcaklık Simülasyonu
+        const temp = 55 + (appState.fanSpeed - 3) * 3 + Math.floor(Math.random() * 5); 
+        temperatureDisplay.innerText = `Sıcaklık: ${temp}°C (Optimal)`;
+        temperatureDisplay.style.color = temp > 75 ? '#ff0057' : '#E6EDF3';
 
-// Kripto Para Seçimini Güncelleme
-window.updateCoinSelection = async function() {
-    const selectedCoin = document.getElementById('coinSelect').value;
-    let appState = await getAppState();
-    
-    appState.selectedCoin = selectedCoin;
-    await saveAppState({ selectedCoin: appState.selectedCoin });
-    
-    updateCoinIcon(selectedCoin);
-    updateUI(appState);
-    showFloatingAlert(`Kazım Parası ${selectedCoin} olarak ayarlandı.`, 'info', 1500);
-}
-
-// Hız Seçimini Güncelleme
-window.handleSpeedChange = async function(speed) {
-    let appState = await getAppState();
-    if (!appState) return;
-
-    // Eğer kilitli değilse (3x süresiz, diğerleri süre bitmemişse)
-    if (appState.unlockedSpeeds[speed]) {
-        appState.fanSpeed = speed;
-        await saveAppState({ fanSpeed: appState.fanSpeed });
-        updateUI(appState);
-        showFloatingAlert(`${speed}x Hız Seçildi.`, 'info', 1500);
+        
     } else {
-        showFloatingAlert("Bu hızın süresi doldu veya aktif değil.", 'error');
+        btn.classList.remove('mining-on');
+        btn.classList.add('mining-off');
+        btn.innerHTML = '<i class="fas fa-play"></i> MADENCİLİĞİ BAŞLAT';
+        statusText.style.color = '#ff0057';
+        statusText.innerText = 'Sistem Durumu: Çevrimdışı (Pasif)';
+        
+        hashrateDisplay.innerHTML = `0.00 <span class="hashrate-unit">MH/s</span>`;
+        hashrateDisplay.style.color = '#E6EDF3';
+        hashrateDisplay.style.textShadow = 'none';
+        fanContainer.classList.remove('fan-spin');
+        temperatureDisplay.innerText = 'Sıcaklık: 45°C (Boşta)';
+        temperatureDisplay.style.color = '#E6EDF3';
+        
+        countdownTimer.innerText = 'Aktif Oturum Süresi: 12:00:00'; 
     }
 }
 
-// Kazımı Başlat/Durdur
-window.toggleMining = async function() {
-    let appState = await getAppState();
-    if (!appState) return;
 
-    appState.isMining = !appState.isMining;
-    appState.lastUpdateTime = Date.now(); 
-    
-    if (appState.isMining) {
-        // Yeni döngü başlangıç zamanını kaydet
-        appState.miningStartTime = Date.now(); 
-        
-        showFloatingAlert(`Kazım ${appState.fanSpeed}x hız ile başlatıldı!`, 'success');
-        startMiningLoop();
-        startTimer(appState.miningStartTime, true);
-    } else {
-        showFloatingAlert('Kazım durduruldu.', 'error');
+function startMiningLoop() {
+    if (miningInterval) {
         clearInterval(miningInterval);
-        clearInterval(timerInterval);
-        startTimer(0, false); // Timer'ı sıfırla
     }
     
-    await saveAppState({ 
-        isMining: appState.isMining, 
-        lastUpdateTime: appState.lastUpdateTime,
-        miningStartTime: appState.miningStartTime
-    });
-    updateUI(appState);
-}
-
-// Manuel Transfer (Sadece madencilik kapalıyken)
-window.transferMiningBalance = async function() {
-    let appState = await getAppState();
-    if (!appState || appState.miningBalance < 0.000001) {
-        showFloatingAlert("Aktarılacak bakiye 0'a yakın.", 'error');
-        return;
-    }
-    if (appState.isMining) {
-        showFloatingAlert("Transfer yapmadan önce madenciliği durdurun.", 'error');
-        return;
-    }
-
-    appState = performTransfer(appState, false);
-    
-    await saveAppState({ 
-        miningBalance: appState.miningBalance, 
-        mainBalance: appState.mainBalance
-    });
-    
-    updateUI(appState); 
+    // Her 5 saniyede bir bakiyeyi ve süreyi kontrol et
+    miningInterval = setInterval(() => {
+        let appState = getAppState();
+        if (appState.isMining) {
+            updateMiningBalance(appState);
+            checkSpeedExpiry(appState); // Lisans kontrolü
+            updateUI(appState);
+        } else {
+            clearInterval(miningInterval);
+        }
+    }, 5000); 
 }
 
 
-// =========================================================================
-// --- BAŞLANGIÇ ---
-// =========================================================================
-
-async function init() {
-    let appState = await getAppState();
-    if (!appState) return;
-
-    // Tüm UI elemanlarını yüklenen veriye göre doldur
-    populateCoinDropdown(appState.selectedCoin || 'USDT');
-    populateSpeedOptions(appState);
+// Başlangıç Fonksiyonu
+function init() {
+    setupCryptoSelection();
     
-    // Madencilik akışını ve transfer kontrolünü tetikle
-    appState = updateMiningBalanceAndCheckTransfer(appState); 
+    // Duration listener'ları kaldırıldı.
+
+    let appState = getAppState();
+    
+    checkSpeedExpiry(appState);
+    updateMiningBalance(appState); 
     updateUI(appState); 
 
-    // Timer'ı ve madencilik döngüsünü başlat
+    if (appState.isMining || appState.fanSpeed > 3) {
+        toggleSettingsCardVisibility(true); 
+    } else {
+        toggleSettingsCardVisibility(false);
+    }
+
     if (appState.isMining) {
         startMiningLoop();
-        startTimer(appState.miningStartTime, true);
+        startCountdown();
     } else {
-        startTimer(0, false);
+        document.getElementById('countdownTimer').innerText = 'Aktif Oturum Süresi: 12:00:00'; 
     }
-    
-    showFloatingAlert("Veriler başarıyla yüklendi. Long Kazım'a başlayabilirsiniz.", 'success', 3000);
 }
 
 
-onAuthStateChanged(auth, (user) => {
-    if (user && user.emailVerified) {
-        currentUserID = user.uid;
-        init(); 
+<script type="module">
+// =========================================================================
+// --- FIREBASE ENTEGRASYONU (Ayarlarınızı Buraya Girin) ---
+// =========================================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+
+// ⚠️ LÜTFEN KENDİ FIREBASE AYARLARINIZLA DEĞİŞTİRİN
+const firebaseConfig = {
+  apiKey: "AIzaSyBwpgITzHh2K3oYTRDaNbGVexPR8IcqXBU",
+  authDomain: "coinbase-a1aca.firebaseapp.com",
+  projectId: "coinbase-a1aca",
+  storageBucket: "coinbase-a1aca.firebasestorage.app",
+  messagingSenderId: "596259885244",
+  appId: "1:596259885244:web:186df79a6ccdc96f0d00b9",
+  measurementId: "G-Q4SMPE62HF"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getDatabase(app);
+
+// ... [Kalan tüm global değişkenler ve yardımcı fonksiyonlar buraya taşınmalıdır (CRYPTOS, getAppState, updateUI vb.)] ...
+
+// =========================================================================
+// ✅ GİRİŞ KONTROLÜ VE BAŞLATMA
+// =========================================================================
+let userID = null;
+
+function init() {
+    // Tüm UI ve mantık başlatma işlemleri
+    setupCryptoSelection();
+    let appState = getAppState();
+    checkSpeedExpiry(appState);
+    updateMiningBalance(appState); 
+    updateUI(appState); 
+
+    if (appState.isMining || appState.fanSpeed > 3) {
+        toggleSettingsCardVisibility(true); 
     } else {
-        // Geliştirme/Demo modu için, kullanıcı ID'si yoksa
-        // **Gerçek uygulamada burayı giriş sayfasına yönlendirmelisiniz.**
-        // window.location.href = "index.html"; 
-        currentUserID = "demo_user_123";
-        init(); // Demo kullanıcı ile devam et
-        document.getElementById('lastTransferInfo').innerText = "DEMO MODU: Gerçek veri için giriş yapın.";
-        showFloatingAlert("Giriş yapılmadığı için Demo Modu aktif.", 'error', 5000);
+        toggleSettingsCardVisibility(false);
     }
+
+    if (appState.isMining) {
+        startMiningLoop();
+        startCountdown();
+    } else {
+        document.getElementById('countdownTimer').innerText = 'Aktif Oturum Süresi: 12:00:00'; 
+    }
+}
+
+// 🔐 Firebase Giriş Kontrolü
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    // Kullanıcı Giriş Yaptı
+    userID = user.uid; // Gerçek kullanıcı ID'sini ata
+    init();
+    console.log("Kullanıcı giriş yaptı: ", userID);
+  } else {
+    // Kullanıcı Giriş Yapmadı
+    console.log("Kullanıcı oturumu bulunamadı. index.html'ye yönlendiriliyor.");
+    // ⚠️ Giriş sayfasına yönlendir
+    window.location.href = 'index.html'; 
+  }
 });
 </script>
   
