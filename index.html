@@ -819,6 +819,14 @@ function animate() {
 }
 animate();
 </script>
+// index.html dosyasının en başındaki script bloğuna ekle:
 
+onAuthStateChanged(auth, (user) => {
+    if (user && user.emailVerified) {
+        // Kullanıcı giriş yapmışsa ve e-postası doğrulanmışsa, doğrudan panele yönlendir
+        window.location.href = "miningpro.html";
+    }
+});
+    
 </body>
 </html>
